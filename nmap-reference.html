@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#13212b">
+  <title>Nmap Options Reference | Dork Ops</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/dork-ops.png" type="image/png">
+  <link rel="stylesheet" href="styles.css?v=29">
+  <script src="nmap.js?v=15" defer></script>
+  <script src="dorkops-ui.js?v=3" defer></script>
+</head>
+<body>
+  <canvas id="rain" aria-hidden="true"></canvas>
+  
+  
+  
+  <div class="shell">
+    <aside class="sidebar" aria-label="Site navigation">
+      <div>
+        <div class="side-label">SEARCH TOOLS</div>
+        <a class="nav-btn" href="dork-engine.html"><span aria-hidden="true">»</span><span>Google Dorking Lab</span></a>
+        <a class="nav-btn" href="dork-engine.html#p2"><span aria-hidden="true">»</span><span>Image Lookup</span></a>
+        <a class="nav-btn" href="dork-engine.html#p3"><span aria-hidden="true">»</span><span>Nmap Lab</span></a>
+        <a class="nav-btn" href="dork-engine.html#p4"><span aria-hidden="true">»</span><span>Password tools lab</span></a>
+      </div>
+      <div>
+        <div class="side-label">REFERENCE</div>
+        <a class="nav-btn" href="search-operators.html"><span aria-hidden="true">»</span><span>Search operators</span></a>
+        <a class="nav-btn active" href="nmap-reference.html" aria-current="page"><span aria-hidden="true">»</span><span>Nmap options</span></a>
+        <a class="nav-btn" href="password-tools.html"><span aria-hidden="true">»</span><span>Password-tool options</span></a>
+        <a class="nav-btn" href="kali-tools.html"><span aria-hidden="true">»</span><span>Kali tools directory</span></a>
+      </div>
+      <div class="more-sites">
+        <div class="side-label">MORE SITES</div>
+        <a class="nav-btn" href="https://osintframework.com/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span><span>OSINT Framework</span></a>
+        <a class="nav-btn" href="https://start.me/p/L1rEYQ/osint4all" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span><span>OSINT4ALL</span></a>
+        <a class="nav-btn" href="https://www.exploit-db.com/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span><span>Exploit-DB</span></a>
+        <a class="nav-btn" href="https://nmap.org/book/man.html" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span><span>Official Nmap guide</span></a>
+      </div>
+      <div class="side-bottom"><strong>AUTHORIZED USE ONLY</strong>Only scan systems and networks you own or have explicit permission to assess.</div>
+    </aside>
+    <main>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">REFERENCE / NETWORK MAPPING</div>
+          <h1>Nmap options</h1>
+          <p class="sub">A categorized quick reference to common Nmap flags. Categories and cards are generated from one local option catalog.</p>
+        </div>
+      </div>
+      <div class="scope-note">
+        <strong>Authorization required:</strong> Nmap sends network probes. Use it only within an explicitly authorized scope, follow the owner’s rate and timing requirements, and verify options against the <a href="https://nmap.org/book/man.html" target="_blank" rel="noopener noreferrer">official Nmap manual</a>. Examples use placeholders such as <code>&lt;target ip&gt;</code>; replace every placeholder with an authorized value before running a command. This reference omits spoofing, decoys, evasion, relay, and exploit-oriented script examples.
+      </div>
+      <p class="note" id="nmap-count" aria-live="polite"></p>
+      <div id="nmap-catalog" aria-live="polite"></div>
+      <div class="scope-note">
+        <strong>Safe lab:</strong> To learn, use a machine you control or Nmap’s explicitly provided <a href="https://scanme.nmap.org/" target="_blank" rel="noopener noreferrer">Scanme test host</a> and follow its usage limits. Do not scan arbitrary public targets.
+      </div>
+      <div class="footnote"><span><b>NOTE:</b> Scan results are point-in-time observations, not proof that a host or service is secure.</span><span>DORK OPS · REFERENCE</span></div>
+      <footer class="site-footer"><span>© Dork Ops</span><span><a href="about.html">About</a><a href="terms.html">Terms of use</a></span></footer>
+    </main>
+  </div>
+</body>
+</html>

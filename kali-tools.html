@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#13212b">
+  <title>Kali Tools Directory | Dork Ops</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/dork-ops.png" type="image/png">
+  <link rel="stylesheet" href="styles.css?v=29">
+  <script src="kali-tools.js?v=16" defer></script>
+  <script src="dorkops-ui.js?v=3" defer></script>
+</head>
+<body>
+  <canvas id="rain" aria-hidden="true"></canvas>
+  
+  
+  
+  <div class="shell">
+    <aside class="sidebar" aria-label="Site navigation">
+      <div>
+        <div class="side-label">SEARCH TOOLS</div>
+        <a class="nav-btn" href="dork-engine.html"><span aria-hidden="true">»</span><span>Google Dorking Lab</span></a>
+        <a class="nav-btn" href="dork-engine.html#p2"><span aria-hidden="true">»</span><span>Image Lookup</span></a>
+        <a class="nav-btn" href="dork-engine.html#p3"><span aria-hidden="true">»</span><span>Nmap Lab</span></a>
+        <a class="nav-btn" href="dork-engine.html#p4"><span aria-hidden="true">»</span><span>Password tools</span></a>
+      </div>
+      <div>
+        <div class="side-label">REFERENCE</div>
+        <a class="nav-btn" href="search-operators.html"><span aria-hidden="true">»</span><span>Search operators</span></a>
+        <a class="nav-btn" href="nmap-reference.html"><span aria-hidden="true">»</span><span>Nmap options</span></a>
+        <a class="nav-btn" href="password-tools.html"><span aria-hidden="true">»</span><span>Password-tool options</span></a>
+        <a class="nav-btn active" href="kali-tools.html" aria-current="page"><span aria-hidden="true">»</span><span>Kali tools directory</span></a>
+      </div>
+      <div class="more-sites">
+        <div class="side-label">MORE SITES</div>
+        <a class="nav-btn" href="https://osintframework.com/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span><span>OSINT Framework</span></a>
+        <a class="nav-btn" href="https://start.me/p/L1rEYQ/osint4all" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span><span>OSINT4ALL</span></a>
+        <a class="nav-btn" href="https://www.exploit-db.com/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span><span>Exploit-DB</span></a>
+      </div>
+      <div class="side-bottom"><strong>AUTHORIZED USE ONLY</strong>Use security tools only on systems, accounts, and data you own or are explicitly authorized to assess.</div>
+    </aside>
+    <main>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">REFERENCE / KALI LINUX</div>
+          <h1>Kali tools directory</h1>
+          <p class="sub">A categorized starting point for popular Kali Linux tools, with links to their Kali documentation pages.</p>
+        </div>
+      </div>
+      <div class="scope-note">
+        <strong>Official full catalogue:</strong> Kali includes hundreds of packages and changes across releases. This curated directory is not an exhaustive or version-pinned list; use the <a href="https://www.kali.org/tools/" target="_blank" rel="noopener noreferrer">official Kali tools catalogue</a> for the current complete package index and version-specific details. Tool links below point to Kali’s official package documentation where available.
+      </div>
+      <p class="note" id="kali-tool-count" aria-live="polite"></p>
+      <div id="kali-tool-catalog"></div>
+      <section class="learning-guide" aria-labelledby="terminal-basics-heading">
+        <h2 id="terminal-basics-heading">Terminal basics: how to read a command</h2>
+        <p>A terminal command is text entered into a shell such as Bash. This reference formats examples for you to inspect or copy; it does not run them.</p>
+        <div class="learning-command"><code>printf 'alpha\nbeta\n' | grep 'beta'</code></div>
+        <ol class="learning-steps">
+          <li><code>printf</code> is the first program; the quoted text is its argument.</li>
+          <li><code>|</code> is a shell operator. It sends the first program’s output into the next program.</li>
+          <li><code>grep 'beta'</code> is the second program and argument; it prints matching lines.</li>
+          <li>The expected output is <code>beta</code>. Each program only sees the arguments passed to it; the shell handles the pipe.</li>
+        </ol>
+        <h3>Command, options, and arguments</h3>
+        <p>For <code>nmap -p 80 127.0.0.1</code>, <code>nmap</code> is the program, <code>-p</code> is an option, <code>80</code> is that option’s value, and <code>127.0.0.1</code> is the target argument. A word in angle brackets, such as <code>&lt;input-file&gt;</code>, is an instruction to substitute your own value—not text to type literally.</p>
+        <h3>Three common ways commands connect</h3>
+        <ul class="learning-steps">
+          <li><code>first && second</code>: run <code>second</code> only when <code>first</code> succeeds.</li>
+          <li><code>first || second</code>: run <code>second</code> only when <code>first</code> fails.</li>
+          <li><code>first ; second</code>: run both in order, regardless of the first result. A pipe (<code>|</code>) is different: it passes output from one program into another.</li>
+        </ul>
+        <p>Use quotes around one argument that contains spaces, for example <code>--output 'lab results.txt'</code>. Quotes group text for the shell; they do not make an unsafe command safe.</p>
+        <p><strong>Pause before redirecting output:</strong> <code>&gt; file</code> replaces an existing file, while <code>&gt;&gt; file</code> appends to it. Check the destination path before running either form. Use <code>--help</code> or <code>man toolname</code> to check options for the installed version.</p>
+      </section>
+      <section class="operator-section" aria-labelledby="shell-operators-heading">
+        <h2 id="shell-operators-heading">Linux terminal operators</h2>
+        <p class="operator-intro">Common Bash syntax for chaining commands, piping output, and working with files. Redirection can overwrite files: choose output paths carefully.</p>
+        <div class="operator-list" id="shell-operator-catalog"></div>
+      </section>
+      <section class="operator-section" aria-labelledby="cli-syntax-heading">
+        <h2 id="cli-syntax-heading">Command-line option syntax</h2>
+        <p class="operator-intro">These conventions are common, not universal; always check the selected tool’s own help and documentation.</p>
+        <div class="operator-list" id="cli-syntax-catalog"></div>
+      </section>
+      <section class="operator-section" aria-labelledby="kali-cli-heading">
+        <h2 id="kali-cli-heading">Kali tool terminal help</h2>
+        <p class="operator-intro">Use these help invocations to inspect installed command syntax. Flags vary across versions; each tool’s Kali package page links to its current usage details.</p>
+        <div class="operator-list" id="kali-cli-catalog"></div>
+      </section>
+      <div class="scope-note"><strong>Reminder:</strong> Tools can generate traffic, access sensitive data, or alter systems. Review the official documentation and get permission before using them.</div>
+      <div class="footnote"><span><b>NOTE:</b> Package availability and command options vary by Kali release.</span><span>DORK OPS · REFERENCE</span></div>
+      <footer class="site-footer"><span>© Dork Ops</span><span><a href="about.html">About</a><a href="terms.html">Terms of use</a></span></footer>
+    </main>
+  </div>
+</body>
+</html>
