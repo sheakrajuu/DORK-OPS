@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#126aa8">
+<meta name="description" content="Dork Ops OS desktop for authorized research and security-tool learning.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/dork-ops.png" type="image/png">
+<title>Dork Ops OS</title>
+<style>
+:root{--win:#1f2229;--bar:#2a2d36;--edge:#0d0f13;--ink:#dfe2e8;--dim:#8d93a0;--sel:#2f7be0;--btn:#2c303a;--field:#191b21;box-sizing:border-box}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:#0e5a96;font:13px/1.3 "Cantarell","Segoe UI",system-ui,sans-serif;color:var(--ink);user-select:none}
+#wall{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 60%,#1b8bc9 0%,#126aa8 40%,#0a3f72 100%)}
+#wall svg{width:100%;height:100%;position:absolute;inset:0}
+#panel{position:fixed;top:0;left:0;right:0;height:30px;background:rgba(14,16,21,.92);display:flex;align-items:center;gap:6px;padding:env(safe-area-inset-top,0px) 10px 0;z-index:9999}
+#panel button{background:none;border:0;color:var(--ink);height:24px;min-width:24px;padding:0 8px;border-radius:3px;font:inherit;cursor:pointer}
+#panel button:hover,#panel button.on{background:#2a2e38}
+#panel button:focus-visible,.win button:focus-visible,.item:focus-visible,.row:focus-visible{outline:2px solid #6fb0ff;outline-offset:1px}
+#panel .sp{flex:1}
+#panel .ws.cur{border-bottom:2px solid var(--sel);border-radius:0}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:#2fb7a0;vertical-align:middle}
+#clock{color:var(--dim);padding-right:6px}
+.win{position:absolute;background:var(--win);border:1px solid var(--edge);border-radius:7px;box-shadow:0 12px 40px rgba(0,0,0,.55);display:flex;flex-direction:column;max-width:calc(100vw - 8px);max-height:calc(100vh - 40px)}
+.win.hide{display:none}
+.title{height:30px;display:flex;align-items:center;justify-content:center;position:relative;background:var(--bar);border-radius:7px 7px 0 0;cursor:grab;touch-action:none;color:#c4c8d0;font-weight:600;font-size:12px}
+.title:active{cursor:grabbing}
+.title .lt{position:absolute;left:10px}
+.title .ctl{position:absolute;right:8px;display:flex;gap:6px}
+.ctl i{width:15px;height:15px;border-radius:50%;background:#14161b;border:0;padding:0;cursor:pointer}
+.ctl i:hover{background:#3a3f4b}
+.ctl i.x:hover{background:#2f7be0}
+.body{padding:10px 12px;overflow:auto;flex:1;min-height:0}
+.foot{padding:8px 10px}
+.btn{background:var(--btn);border:1px solid #14161b;color:var(--ink);padding:6px 12px;border-radius:4px;font:inherit;cursor:pointer;display:inline-flex;gap:6px;align-items:center;justify-content:center}
+.btn:hover{background:#363b47}
+.btn:disabled{opacity:.4;cursor:default}
+#settings{left:60px;top:80px;width:650px;height:480px}
+#settings .search{display:flex;justify-content:flex-end;padding:8px 12px 0}
+#settings input{width:150px;background:var(--field);color:var(--ink);border:1px solid #14161b;border-radius:4px;padding:6px 8px;font:inherit;user-select:text}
+#settings h4{margin:12px 0 8px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 6px}
+.item{display:flex;gap:8px;align-items:center;padding:6px;border-radius:5px;cursor:pointer;background:none;border:0;color:inherit;font:inherit;text-align:left}
+.item:hover{background:#292d37}
+.ic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+.ic b{width:14px;height:14px;background:rgba(255,255,255,.92);border-radius:3px}
+.ic b.r{border-radius:50%}
+#users{left:400px;top:250px;width:590px;height:390px}
+#users .cols{display:flex;gap:20px;height:100%}
+.list{width:190px;display:flex;flex-direction:column;gap:6px}
+.rows{background:var(--field);border:1px solid #14161b;min-height:130px;overflow:auto;flex:1}
+.row{padding:8px 10px;display:block;width:100%;text-align:left;background:none;border:0;color:inherit;font:inherit;cursor:pointer}
+.row b{display:block;font-weight:700}
+.row span{color:var(--dim);font-style:italic}
+.row.sel{background:var(--sel)}
+.row.sel span{color:#d6e6ff}
+.pair{display:flex;gap:6px}
+.pair .btn{flex:1}
+.detail{flex:1;padding-top:6px}
+.who{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:600;margin-bottom:22px}
+.av{width:52px;height:52px;border-radius:50%;background:#1d78e6;display:grid;place-items:center;font-size:22px;font-weight:700;text-transform:uppercase;color:#fff}
+.kv{display:grid;grid-template-columns:90px 1fr auto;gap:10px 8px;align-items:center;margin-bottom:12px}
+.kv label{color:var(--dim);text-align:right}
+.kv .ch{color:var(--dim);cursor:pointer;background:none;border:0;font:inherit}
+.kv .ch:hover{color:var(--ink)}
+#groups{left:740px;top:430px;width:365px;height:300px}
+#groups .gl{display:flex;gap:10px;height:100%}
+#groups .rows{min-height:0}
+#groups .row{padding:4px 8px}
+.side{display:flex;flex-direction:column;gap:8px;width:92px}
+#logo{position:fixed;z-index:0;left:50%;bottom:28px;transform:translateX(-50%);border:5px solid #eef6ff;color:#eef6ff;font-size:40px;font-weight:300;letter-spacing:.06em;padding:0 16px;pointer-events:none;border-bottom-width:5px;opacity:.95}
+.dlg{left:50%;top:50%;transform:translate(-50%,-50%);width:290px;z-index:20000!important}
+.dlg input{width:100%;margin:8px 0 12px;background:var(--field);color:var(--ink);border:1px solid #14161b;border-radius:4px;padding:7px 8px;font:inherit;user-select:text}
+.dlg .pair{justify-content:flex-end}
+.dlg .pair .btn{flex:none}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}#users .cols{flex-direction:column}.list{width:100%}#logo{font-size:28px}}
+.win.max{left:0!important;top:30px!important;width:100vw!important;height:calc(100vh - 30px)!important;max-width:none;max-height:none;border-radius:0}
+.win.max .title{border-radius:0;cursor:default}
+.pi{display:inline-grid;place-items:center;vertical-align:middle}
+.lt{display:flex}
+.ic{color:#fff}
+.cb{width:20px;height:20px;border-radius:50%;background:#14161b;border:0;color:#c4c8d0;display:grid;place-items:center;padding:0;cursor:pointer}
+.cb:hover{background:#3a3f4b}
+.cb[data-close]:hover{background:#d9534f;color:#fff}
+#brand{font-size:12px;letter-spacing:.08em;color:#6fb0ff;padding:0 10px 0 2px}
+#tasks{display:flex;gap:4px;margin-left:8px;overflow:hidden}
+#panel .tk{display:flex;align-items:center;gap:6px;max-width:150px}
+.tk span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#panel .tk.on{background:#2a2e38;box-shadow:inset 0 -2px #2f7be0}
+#panel .tk.mn{opacity:.55}
+@media(max-width:700px){.tk span{display:none}#brand{display:none}}
+#panel{height:38px;gap:4px}
+#apps-toggle{display:flex;align-items:center;gap:6px}
+#workspaces{display:flex;align-items:center;gap:2px}
+#tasks{min-width:0}
+#panel .tk{max-width:190px;overflow:hidden}
+#panel .tk.on{background:#2a2e38;box-shadow:inset 0 -2px #2f7be0}
+#panel .tk.active{background:#2a2e38;box-shadow:inset 0 -2px #2f7be0}
+#panel .tk span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#notification-count{display:inline-grid;place-items:center;min-width:16px;height:16px;margin-left:4px;border-radius:50%;background:#2f7be0;color:#fff;font-size:10px}
+body[data-wallpaper="midnight"] #wall{background:radial-gradient(ellipse at 50% 60%,#303746 0%,#171d2b 45%,#090d16 100%)}
+body[data-wallpaper="violet"] #wall{background:radial-gradient(ellipse at 50% 60%,#63489b 0%,#392b67 45%,#17112d 100%)}
+body[data-tint="teal"]{--sel:#218d91}
+body[data-tint="violet"]{--sel:#7053b8}
+body[data-density="compact"] .body{padding:7px 9px}
+body[data-density="compact"] .settings-body{gap:5px}
+body[data-motion="reduced"] *,body[data-motion="reduced"] *::before,body[data-motion="reduced"] *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+.apps-menu{position:fixed;z-index:10001;top:44px;left:8px;width:min(620px,calc(100vw - 16px));max-height:calc(100vh - 52px);overflow:auto;padding:14px;border:1px solid #424650;border-radius:8px;background:#1b1e25;box-shadow:0 16px 44px #000b}
+.launcher-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:2px 2px 12px;border-bottom:1px solid #373b45}
+.launcher-kicker{margin:0 0 3px;color:#8d93a0;font-size:9px;font-weight:700;letter-spacing:.14em}
+.launcher-head h2{margin:0;color:#f1f3f7;font-size:16px;line-height:1.2}
+.launcher-close{width:30px;height:30px;display:grid;place-items:center;border:1px solid #3b404a;border-radius:5px;background:#242831;color:#c6cbd4;cursor:pointer}
+.launcher-close:hover{background:#303641;color:#fff}
+.launcher-group{margin-top:13px}
+.launcher-group h3{display:flex;align-items:center;gap:7px;margin:0 0 7px;color:#a9b1bf;font-size:9px;letter-spacing:.12em}
+.launcher-count{margin-left:auto;color:#737c8a;font-size:9px;font-weight:400;letter-spacing:0}
+.launcher-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+.launcher-tile{display:flex;min-width:0;min-height:52px;align-items:center;gap:10px;padding:7px 9px;border:1px solid transparent;border-radius:6px;background:#22262f;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
+.launcher-tile:hover,.launcher-tile:focus-visible{border-color:#485465;background:#2a303a;color:#fff;text-decoration:none}
+.launcher-tile.selected{border-color:#3a6293;background:#26364a}
+.app-icon{width:34px;height:34px;display:grid;flex:none;place-items:center;border:1px solid #ffffff16;border-radius:7px;background:#25476f;color:#a9d1ff}
+.app-icon.violet{background:#3e315d;color:#d2bdff}.app-icon.green{background:#254b3d;color:#9bdfbd}.app-icon.amber{background:#51402b;color:#f0c98a}.app-icon.teal{background:#25494d;color:#9adadd}
+.app-icon svg,.website-arrow svg,.launcher-close svg,.launcher-group h3 svg{width:17px;height:17px}
+.launcher-copy{display:grid;min-width:0;gap:3px}
+.launcher-copy strong{overflow:hidden;color:inherit;font-size:11px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+.launcher-copy small{overflow:hidden;color:#939baa;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.website-arrow{margin-left:auto;color:#858e9d}
+.toolbar-icon{width:18px;height:18px;display:grid;place-items:center}
+.toolbar-icon svg{width:17px;height:17px}
+#settings-toggle,#notifications-toggle{width:30px;height:28px;display:grid;place-items:center;padding:0;position:relative}
+#notification-count{position:absolute;top:-3px;right:-3px;min-width:14px;height:14px;display:grid;place-items:center;padding:0 3px;border:1px solid #12151a;border-radius:99px;background:#397ee0;color:white;font-size:9px;line-height:1}
+#notification-count[hidden]{display:none}
+.win[hidden]{display:none}
+.app-window{left:4vw;top:54px;width:min(760px,82vw);height:min(620px,calc(100vh - 100px));min-width:min(340px,calc(100vw - 12px));min-height:min(270px,calc(100vh - 50px));overflow:hidden;z-index:5}
+.app-window .title{flex:none}
+.app-frame{display:block;width:100%;height:calc(100% - 30px);flex:1;border:0;background:#111;min-height:0}
+.app-window.max{left:0!important;top:38px!important;width:100vw!important;height:calc(100vh - 38px)!important;min-width:0;min-height:0}
+.resize-handle{position:absolute;right:2px;bottom:2px;z-index:4;width:19px;height:19px;padding:0;border:0;border-radius:0 0 5px 0;background:linear-gradient(135deg,transparent 45%,#8791a1 46%,#8791a1 52%,transparent 53%),linear-gradient(135deg,transparent 62%,#8791a1 63%,#8791a1 69%,transparent 70%);cursor:nwse-resize;touch-action:none}
+.resize-handle:focus-visible{outline:2px solid #6fb0ff;outline-offset:-2px}
+.app-window.max .resize-handle{display:none}
+#settings-window{left:calc(50% - 230px);top:70px;width:min(460px,calc(100vw - 20px));height:min(620px,calc(100vh - 80px));z-index:7}
+.settings-body{display:grid;align-content:start;gap:9px}
+.settings-body h3{margin:4px 0;color:#9cccf0;font-size:12px}
+.settings-body label:not(.setting-check){display:grid;grid-template-columns:minmax(130px,1fr) minmax(140px,1.3fr);gap:10px;align-items:center}
+.settings-body select,.settings-body input:not([type=checkbox]){min-width:0;padding:6px 8px;border:1px solid #414650;border-radius:4px;background:var(--field);color:var(--ink);font:inherit}
+.settings-body .setting-check{display:flex;align-items:center;gap:8px}
+.settings-body p{margin:4px 0;color:var(--dim);font-size:11px}
+.settings-body .pair{margin-top:4px}
+#settings-status{min-height:1em}
+#notifications-window{right:14px;top:46px;width:min(380px,calc(100vw - 20px));max-height:calc(100vh - 60px);z-index:8}
+.notification{padding:11px 4px;border-bottom:1px solid #3b3f48}
+.notification strong{display:block}
+.notification p{color:var(--dim);margin:6px 0}
+.notification-actions{display:flex;align-items:center;justify-content:flex-start;gap:8px}
+.notification-actions a{color:#8fc2ff;font-size:10px;text-decoration:none}
+.notification-actions a:hover{color:#fff;text-decoration:underline}
+#apps-menu button.selected{background:#2a2e38;box-shadow:inset 2px 0 var(--sel)}
+@media(max-width:700px){
+  #panel{gap:2px;padding-left:5px;padding-right:5px}
+  #apps-toggle span:not(.pi),#brand{display:none}
+  #workspaces{gap:0}
+  #tasks{margin-left:2px}
+  #panel .tk{max-width:42px;padding:0 5px}
+  #panel .tk:not(.on){display:none}
+  .app-window{left:4px;top:44px;width:calc(100vw - 8px);height:calc(100vh - 54px);min-width:0;min-height:0;resize:none}
+  .app-window.max{top:38px!important;width:100vw!important;height:calc(100vh - 38px)!important}
+  #settings-window{left:8px;top:46px;width:calc(100vw - 16px);height:calc(100vh - 56px)}
+  #notifications-window{right:8px;top:46px;width:calc(100vw - 16px)}
+  .settings-body label:not(.setting-check){grid-template-columns:1fr}
+  .apps-menu{left:5px;width:calc(100vw - 10px);padding:10px}
+  .launcher-grid{gap:4px}
+  .launcher-tile{min-height:48px;gap:7px;padding:6px}
+  .app-icon{width:30px;height:30px}
+}
+@media(max-width:390px){.launcher-grid{grid-template-columns:1fr}.launcher-tile{min-height:44px}}
+</style>
+</head>
+<body>
+<div id="wall">
+<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#0a3f72" stroke-width="26" stroke-linecap="round" opacity=".55">
+<path d="M-40 120C120 40 220 200 120 300S-60 460 80 560"/><path d="M1240 90C1080 30 980 190 1090 290S1250 440 1110 560"/>
+<path d="M300 840C380 700 520 760 600 650S760 600 900 700"/><path d="M200 40C320 100 460 -20 600 60S820 120 980 20"/>
+<path d="M-30 700C100 620 200 760 330 700"/><path d="M880 840C980 740 1120 800 1240 720"/>
+</svg>
+</div>
+
+<div id="panel">
+<b id="brand">DORK OPS</b>
+<button id="apps-toggle" title="Applications" aria-label="Open applications" aria-expanded="false" aria-controls="apps-menu"><span class="toolbar-icon" data-icon="layout-grid"></span><span>Applications</span></button>
+<div id="apps-menu" class="apps-menu" hidden role="dialog" aria-label="Application center">
+  <div class="launcher-head"><div><p class="launcher-kicker">DORK OPS</p><h2>Application center</h2></div><button class="launcher-close" type="button" aria-label="Close application center">×</button></div>
+  <section class="launcher-group" aria-labelledby="labs-heading">
+    <h3 id="labs-heading">LABS <span class="launcher-count">4 APPS</span></h3>
+    <div class="launcher-grid">
+      <button class="launcher-tile" type="button" data-app="dorking"><span class="app-icon blue" data-icon="search"></span><span class="launcher-copy"><strong>Google Dorking Lab</strong><small>Build scoped public searches</small></span></button>
+      <button class="launcher-tile" type="button" data-app="images"><span class="app-icon violet" data-icon="image"></span><span class="launcher-copy"><strong>Image Lookup</strong><small>Search an image across providers</small></span></button>
+      <button class="launcher-tile" type="button" data-app="nmap"><span class="app-icon green" data-icon="network"></span><span class="launcher-copy"><strong>Nmap Lab</strong><small>Build an authorized host scan</small></span></button>
+      <button class="launcher-tile" type="button" data-app="passwords"><span class="app-icon amber" data-icon="key-round"></span><span class="launcher-copy"><strong>Password Tools</strong><small>Explore local audit commands</small></span></button>
+    </div>
+  </section>
+  <section class="launcher-group" aria-labelledby="reference-heading">
+    <h3 id="reference-heading">REFERENCES <span class="launcher-count">4 PAGES</span></h3>
+    <div class="launcher-grid">
+      <button class="launcher-tile" type="button" data-app="operators"><span class="app-icon violet" data-icon="search"></span><span class="launcher-copy"><strong>Search Operators</strong><small>Operator reference catalog</small></span></button>
+      <button class="launcher-tile" type="button" data-app="nmap-reference"><span class="app-icon green" data-icon="network"></span><span class="launcher-copy"><strong>Nmap Options</strong><small>Flags and scan options</small></span></button>
+      <button class="launcher-tile" type="button" data-app="password-reference"><span class="app-icon amber" data-icon="book-open"></span><span class="launcher-copy"><strong>Password Tool Options</strong><small>Tool option reference</small></span></button>
+      <button class="launcher-tile" type="button" data-app="kali-tools"><span class="app-icon teal" data-icon="layout-grid"></span><span class="launcher-copy"><strong>Kali Tools</strong><small>Browse the tool directory</small></span></button>
+    </div>
+  </section>
+  <section class="launcher-group" aria-labelledby="websites-heading">
+    <h3 id="websites-heading">WEBSITES <span class="launcher-count">3 LINKS</span></h3>
+    <div class="launcher-grid">
+      <a class="launcher-tile website-link" href="https://osintframework.com/" target="_blank" rel="noopener noreferrer"><span class="app-icon blue" data-icon="globe"></span><span class="launcher-copy"><strong>OSINT Framework</strong><small>Open-source intelligence resources</small></span><span class="website-arrow" data-icon="arrow-up-right"></span></a>
+      <a class="launcher-tile website-link" href="https://start.me/p/L1rEYQ/osint4all" target="_blank" rel="noopener noreferrer"><span class="app-icon violet" data-icon="globe"></span><span class="launcher-copy"><strong>OSINT4ALL</strong><small>Curated OSINT bookmarks</small></span><span class="website-arrow" data-icon="arrow-up-right"></span></a>
+      <a class="launcher-tile website-link" href="https://www.exploit-db.com/" target="_blank" rel="noopener noreferrer"><span class="app-icon amber" data-icon="globe"></span><span class="launcher-copy"><strong>Exploit-DB</strong><small>Public vulnerability research</small></span><span class="website-arrow" data-icon="arrow-up-right"></span></a>
+    </div>
+  </section>
+</div>
+<div id="workspaces" aria-label="Lab workspaces">
+  <button class="ws cur" data-workspace="1" aria-label="Workspace 1" aria-pressed="true">1</button>
+  <button class="ws" data-workspace="2" aria-label="Workspace 2" aria-pressed="false">2</button>
+  <button class="ws" data-workspace="3" aria-label="Workspace 3" aria-pressed="false">3</button>
+  <button class="ws" data-workspace="4" aria-label="Workspace 4" aria-pressed="false">4</button>
+</div>
+<span id="tasks" aria-label="Open windows"></span><span class="sp"></span>
+<button id="settings-toggle" class="icon-only" type="button" title="Settings" aria-label="Settings" aria-controls="settings-window"><span class="toolbar-icon" data-icon="settings"></span></button>
+<button id="notifications-toggle" class="icon-only" type="button" title="Notifications" aria-label="Notifications" aria-controls="notifications-window"><span class="toolbar-icon" data-icon="bell"></span><span id="notification-count" hidden></span></button>
+<span id="clock"></span>
+</div>
+
+<template id="app-window-template">
+<div class="win app-window" data-app-window>
+<div class="title">
+  <span class="lt" data-window-icon aria-hidden="true"></span>
+  <span data-window-title></span>
+  <span class="ctl"><button class="cb" data-min aria-label="Minimize">−</button><button class="cb" data-max aria-label="Maximize">□</button><button class="cb" data-close aria-label="Close">×</button></span>
+</div>
+<iframe class="app-frame" title="" allow="clipboard-read; clipboard-write"></iframe>
+<button class="resize-handle" type="button" aria-label="Resize app window" title="Drag to resize"></button>
+</div>
+</template>
+
+<div class="win" id="settings-window" hidden>
+<div class="title"><span class="lt"><span data-icon="settings"></span></span><span>Dork Ops Settings</span><span class="ctl"><button class="cb" data-min aria-label="Minimize">−</button><button class="cb" data-max aria-label="Maximize">□</button><button class="cb" data-close aria-label="Close">×</button></span></div>
+<div class="body settings-body">
+  <h3>Desktop</h3>
+  <label>Wallpaper<select data-setting="wallpaper"><option value="blue">Blue desktop</option><option value="midnight">Midnight</option><option value="violet">Violet dusk</option></select></label>
+  <label>Interface tint<select data-setting="tint"><option value="blue">Ocean blue</option><option value="teal">Teal</option><option value="violet">Violet</option></select></label>
+  <label>Interface density<select data-setting="density"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></label>
+  <label class="setting-check"><input type="checkbox" data-setting="reducedMotion"> Reduce animation and motion</label>
+  <h3>Default lab settings</h3>
+  <label>Google Dorking matching<select data-setting="googleMatchMode"><option value="all">All terms (AND)</option><option value="any">Any term (OR)</option></select></label>
+  <label>Nmap scan method<select data-setting="nmapScanType"><option value="-sT">TCP connect</option><option value="-sS">SYN</option><option value="-sU">UDP</option></select></label>
+  <label>Nmap timing<select data-setting="nmapTiming"><option value="-T2">T2 · considerate</option><option value="-T3">T3 · normal</option></select></label>
+  <label class="setting-check"><input type="checkbox" data-setting="nmapTopPorts"> Use top-100-ports preset</label>
+  <label>Password tool<select data-setting="passwordTool"><option value="hydra">THC Hydra</option><option value="john">John the Ripper</option><option value="hashcat">Hashcat</option></select></label>
+  <p>Preferences are saved in this browser. Apply defaults to open labs from the panel controls. Commands remain text-only and are never executed here.</p>
+  <div class="pair"><button class="btn" id="settings-reset">Restore defaults</button><button class="btn" id="settings-apply">Apply lab defaults</button></div>
+  <p id="settings-status" role="status" aria-live="polite"></p>
+</div>
+</div>
+
+<div class="win" id="notifications-window" hidden>
+<div class="title"><span class="lt"><span data-icon="bell"></span></span><span>Dork Ops Notifications</span><span class="ctl"><button class="cb" data-min aria-label="Minimize">−</button><button class="cb" data-max aria-label="Maximize">□</button><button class="cb" data-close aria-label="Close">×</button></span></div>
+<div class="body" id="notification-list"></div>
+</div>
+
+<div id="logo">DORK OPS</div>
+
+<script src="dork-ops-desktop.js?v=13" defer></script>
+</body>
+</html>
