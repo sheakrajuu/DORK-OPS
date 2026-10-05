@@ -91,6 +91,8 @@ const PASSWORD_TOOL_OPTIONS = [
   }
 ];
 
+window.DORK_OPS_PASSWORD_TOOL_OPTIONS = PASSWORD_TOOL_OPTIONS;
+
 function copyReferenceText(text, button) {
   const original = button.textContent;
   const setStatus = status => {

@@ -112,6 +112,14 @@ const KALI_HELP_COMMANDS = [
   ["Recon-ng", "recon-ng -h", "recon-ng"]
 ];
 
+window.DORK_OPS_KALI_DATA = {
+  groups: KALI_TOOL_GROUPS,
+  shellOperators: SHELL_OPERATORS,
+  syntax: CLI_SYNTAX,
+  help: KALI_HELP_COMMANDS
+};
+
+if (document.getElementById("kali-tool-catalog")) {
 const catalog = document.getElementById("kali-tool-catalog");
 const shellCatalog = document.getElementById("shell-operator-catalog");
 const syntaxCatalog = document.getElementById("cli-syntax-catalog");
@@ -259,3 +267,4 @@ KALI_HELP_COMMANDS.forEach(([name, command, packageName]) => {
 });
 
 document.getElementById("kali-tool-count").textContent = `${totalTools} CURATED TOOLS`;
+}

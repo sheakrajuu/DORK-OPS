@@ -137,6 +137,35 @@ function makeRecommendationList(host, heading, recommendations, onPromote, requi
   });
 }
 
+function recommendCompanionApp(section, appId, appTitle, reason) {
+  if (!section) return;
+  section.querySelector(".lab-next-app-card")?.remove();
+  const card = document.createElement("article");
+  card.className = "lab-next-app-card";
+  addTextElement(card, "span", "lab-next-app-kicker", "RECOMMENDED NEXT APP");
+  addTextElement(card, "h4", "", appTitle);
+  addTextElement(card, "p", "", reason);
+  const button = addTextElement(card, "button", "lab-next-app-button", `Open ${appTitle} →`);
+  button.type = "button";
+  button.addEventListener("click", () => {
+    if (window.parent !== window) {
+      const targetOrigin = window.location.origin === "null" ? "*" : window.location.origin;
+      window.parent.postMessage({ type: "dorkops:open-app", appId }, targetOrigin);
+      return;
+    }
+    const paths = {
+      dorking: "dork-engine.html#p1",
+      images: "dork-engine.html#p2",
+      nmap: "dork-engine.html#p3",
+      passwords: "dork-engine.html#p4",
+      "field-guide": "field-guide.html",
+      "kali-tools": "kali-tools.html"
+    };
+    window.location.href = paths[appId] || "dork-engine.html";
+  });
+  section.appendChild(card);
+}
+
 function getNmapRecommendations(state, primaryCommand) {
   const candidates = [];
   const add = (title, reason, changes) => {
@@ -251,14 +280,30 @@ function renderPasswordRecommendations(tool, command) {
   });
 }
 
-document.addEventListener("dorkops:google-built", () => {
+document.addEventListener("dorkops:google-built", event => {
   const section = document.getElementById("google-next-steps");
-  if (section) section.hidden = false;
+  if (section) {
+    section.hidden = false;
+    recommendCompanionApp(
+      section,
+      "images",
+      "Image Lookup",
+      "If a relevant result contains an image, compare its source pages, crop, and publication context. Submit only an image you are permitted to analyze; visual similarity does not establish identity or ownership."
+    );
+  }
 });
 
 document.addEventListener("dorkops:image-ready", () => {
   const section = document.getElementById("image-next-steps");
-  if (section) section.hidden = false;
+  if (section) {
+    section.hidden = false;
+    recommendCompanionApp(
+      section,
+      "dorking",
+      "Google Dorking Lab",
+      "Use a scoped public query to locate the candidate source page, then verify its publisher, date, and context. A search result or visual match is only a lead."
+    );
+  }
 });
 
 document.addEventListener("dorkops:nmap-built", event => {
@@ -280,6 +325,12 @@ document.addEventListener("dorkops:nmap-built", event => {
   };
   const command = event.detail.command || document.getElementById("nmap-command-text").textContent;
   section.hidden = false;
+  recommendCompanionApp(
+    section,
+    "field-guide",
+    "Linux & Security Field Guide",
+    "Use the networking and DNS guide to interpret scan observations and plan evidence-based follow-up. A port state is not proof of a vulnerability; coordinate any further testing with the system owner."
+  );
   textarea.value = "";
   renderNmapPlan();
   renderNmapBreakdown(state);
@@ -352,6 +403,21 @@ document.addEventListener("dorkops:password-built", event => {
   };
   guidance.textContent = guidanceByTool[tool] || guidanceByTool.john;
   section.hidden = false;
+  if (tool === "hydra") {
+    recommendCompanionApp(
+      section,
+      "nmap",
+      "Nmap Operators",
+      "For an explicitly approved local lab only, review the service and port scope before a login test. This is a separate check: the Nmap builder also requires scope confirmation and does not run scans."
+    );
+  } else {
+    recommendCompanionApp(
+      section,
+      "field-guide",
+      "Linux & Security Field Guide",
+      "Review the incident-triage guidance for handling and reporting sensitive audit output. Keep recovered test data inside the approved lab and follow its retention rules."
+    );
+  }
   const command = event.detail.command || document.getElementById("pw-command-text").textContent;
   renderPasswordRecommendations(tool, command);
 });

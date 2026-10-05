@@ -2,12 +2,12 @@
   "id": "./dork-ops.html",
   "name": "Dork Ops OS",
   "short_name": "Dork Ops",
-  "description": "A Kali-inspired workspace for authorized public research and security-tool learning.",
+  "description": "A windowed terminal workspace for authorized research and security-tool learning.",
   "start_url": "./dork-ops.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#101820",
-  "theme_color": "#13212b",
+  "background_color": "#0e5a96",
+  "theme_color": "#126aa8",
   "icons": [
     {
       "src": "./icons/dork-ops.png",

@@ -1,6 +1,7 @@
 "use strict";
 
 const settingsStorageKey = "dorkops-os-settings";
+const dismissedNotificationsKey = "dorkops-os-dismissed-notifications";
 const defaultSettings = Object.freeze({
   wallpaper: "blue",
   tint: "blue",
@@ -129,12 +130,15 @@ function createApplicationMenu(topbar) {
       ["LABS", [
         ["Google Dorking Lab", "dork-engine.html#p1", "⌕"],
         ["Image Lookup", "dork-engine.html#p2", "▧"],
-        ["Nmap Lab", "dork-engine.html#p3", "⌘"],
+        ["Nmap Operators", "dork-engine.html#p3", "⌘"],
         ["Password Tools", "dork-engine.html#p4", "◇"]
+      ]],
+      ["LEARNING", [
+        ["Linux & Security Field Guide", "field-guide.html", "▤"]
       ]],
       ["REFERENCE", [
         ["Search Operators", "search-operators.html", "⌗"],
-        ["Nmap Options", "nmap-reference.html", "≡"],
+        ["Nmap Operators", "dork-engine.html#p3", "≡"],
         ["Password Tool Options", "password-tools.html", "⚙"],
         ["Kali Tools", "kali-tools.html", "▦"]
       ]]
@@ -189,7 +193,7 @@ function createWorkspaceBar(topbar) {
   const workspaces = document.createElement("nav");
   workspaces.className = "workspace-switcher";
   workspaces.setAttribute("aria-label", "Lab workspaces");
-  const names = ["Google Dorking Lab", "Image Lookup", "Nmap Lab", "Password Tools"];
+  const names = ["Google Dorking Lab", "Image Lookup", "Nmap Operators", "Password Tools"];
   names.forEach((name, index) => {
     const view = index + 1;
     const button = document.createElement("button");
@@ -326,7 +330,7 @@ function createSettings(topbar) {
         </label>
       </section>
       <section class="settings-section">
-        <h3>Nmap Lab</h3>
+        <h3>Nmap Operators</h3>
         <div class="settings-fields">
           <label>Default scan method
             <select data-setting="nmapScanType">
@@ -457,20 +461,64 @@ function renderNotifications() {
   const badge = document.getElementById("notification-count");
   if (!list || !badge) return;
   list.replaceChildren();
-  const visible = notificationItems;
+  let dismissed = [];
+  try {
+    const saved = JSON.parse(localStorage.getItem(dismissedNotificationsKey) || "[]");
+    if (Array.isArray(saved)) dismissed = saved.filter(id => typeof id === "string");
+  } catch (error) {
+    console.error("Could not read dismissed Dork Ops notifications.", error);
+  }
+  const visible = notificationItems.filter(item => !dismissed.includes(item.id));
   badge.hidden = visible.length === 0;
   badge.textContent = String(visible.length);
   if (!visible.length) {
     const empty = document.createElement("p");
     empty.className = "notifications-empty";
-    empty.textContent = "You're all caught up.";
+    empty.textContent = dismissed.length ? "All notifications dismissed." : "You're all caught up.";
     list.appendChild(empty);
+    if (dismissed.length) {
+      const restore = document.createElement("button");
+      restore.type = "button";
+      restore.className = "notification-restore";
+      restore.textContent = "Restore dismissed notifications";
+      restore.addEventListener("click", () => {
+        try {
+          localStorage.removeItem(dismissedNotificationsKey);
+        } catch (error) {
+          console.error("Could not restore Dork Ops notifications.", error);
+          restore.textContent = "Could not restore notifications";
+          return;
+        }
+        renderNotifications();
+      });
+      list.appendChild(restore);
+    }
     return;
   }
 
   visible.forEach(item => {
     const card = document.createElement("article");
     card.className = "notification-card";
+    const dismiss = document.createElement("button");
+    dismiss.type = "button";
+    dismiss.className = "notification-card-dismiss";
+    dismiss.setAttribute("aria-label", `Dismiss notification: ${item.title}`);
+    dismiss.title = "Dismiss notification";
+    dismiss.textContent = "×";
+    dismiss.addEventListener("click", () => {
+      try {
+        localStorage.setItem(dismissedNotificationsKey, JSON.stringify([...dismissed, item.id]));
+      } catch (error) {
+        console.error("Could not save dismissed Dork Ops notification.", error);
+        dismiss.textContent = "!";
+        dismiss.title = "Could not save notification dismissal";
+        return;
+      }
+      renderNotifications();
+      const nextDismiss = list.querySelector(".notification-card-dismiss");
+      if (nextDismiss) nextDismiss.focus({ preventScroll: true });
+      else badge.focus({ preventScroll: true });
+    });
     const title = document.createElement("h3");
     title.textContent = item.title;
     const message = document.createElement("p");
@@ -480,7 +528,7 @@ function renderNotifications() {
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     link.textContent = item.linkText;
-    card.append(title, message, link);
+    card.append(dismiss, title, message, link);
     list.appendChild(card);
   });
 }
@@ -591,14 +639,14 @@ function setupWindowTitle() {
       const apps = {
         "Google Dorking Lab": ["dorking", "⌕", "Google Dorking", "PUBLIC SEARCH / APP 01"],
         "Image Lookup": ["images", "▧", "Image Lookup", "VISUAL SEARCH / APP 02"],
-        "Nmap Lab": ["nmap", "⌘", "Nmap Workbench", "NETWORK MAPPING / APP 03"],
+        "Nmap Operators": ["nmap", "⌘", "Nmap Operators", "NETWORK MAPPING / APP 03"],
         "Password tools": ["passwords", "◇", "Password Audit", "LOCAL AUDIT / APP 04"]
       };
       return apps[currentView.textContent.trim()] || ["workspace", "◈", currentView.textContent.trim(), "DORK OPS / APPLICATION"];
     }
     const path = window.location.pathname.toLowerCase();
     if (path.endsWith("search-operators.html")) return ["operators", "⌗", "Search Operators", "SEARCH REFERENCE / APP"];
-    if (path.endsWith("nmap-reference.html")) return ["nmap", "⌘", "Nmap Options", "NETWORK REFERENCE / APP"];
+    if (path.endsWith("nmap-reference.html")) return ["nmap", "⌘", "Nmap Operators", "NETWORK REFERENCE / APP"];
     if (path.endsWith("password-tools.html")) return ["passwords", "◇", "Password Tool Options", "AUDIT REFERENCE / APP"];
     if (path.endsWith("kali-tools.html")) return ["catalog", "▦", "Kali Tools Directory", "TOOL CATALOG / APP"];
     if (path.endsWith("about.html") || path.endsWith("terms.html")) return ["system", "◈", document.querySelector("main h1")?.textContent.trim() || "System information", "DORK OPS / SYSTEM"];

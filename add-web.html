@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11161c">
+  <title>Add Web · Dork Ops</title>
+  <link rel="stylesheet" href="styles.css?v=36">
+  <style>
+    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#10151a;color:#e6ebee}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 80% 0,#202a32 0,transparent 38%),#10151a}
+    .web-app{width:min(940px,100%);margin:0 auto;padding:clamp(18px,4vw,42px)}
+    .web-topline{display:flex;align-items:center;gap:10px;color:#8d9aa3;font:10px/1.4 Consolas,monospace;letter-spacing:.13em}
+    .web-dot{width:7px;height:7px;border-radius:50%;background:#9fb0b8;box-shadow:0 0 10px #9fb0b855}
+    h1{margin:18px 0 7px;font-size:clamp(24px,5vw,37px);letter-spacing:-.04em}
+    .web-intro{max-width:640px;margin:0;color:#a9b4bb;font-size:13px;line-height:1.7}
+    .web-layout{display:grid;grid-template-columns:minmax(240px,.78fr) minmax(300px,1.22fr);gap:16px;margin-top:26px}
+    .web-panel{min-width:0;padding:clamp(15px,2.5vw,22px);border:1px solid #313c45;border-radius:12px;background:linear-gradient(150deg,#1a2229,#141a20);box-shadow:0 12px 30px #0003}
+    .web-panel h2{margin:0 0 6px;font-size:15px}
+    .web-panel > p{margin:0 0 17px;color:#9eabb3;font-size:11px;line-height:1.6}
+    .web-form{display:grid;gap:12px}
+    .web-field{display:grid;gap:6px;color:#c8d1d6;font-size:10px;font-weight:650}
+    .web-field input,.web-field textarea{width:100%;min-width:0;padding:10px 11px;border:1px solid #3a4650;border-radius:7px;background:#0e1419;color:#edf1f3;font:inherit;font-size:12px;line-height:1.5;outline:none}
+    .web-field textarea{min-height:76px;resize:vertical}
+    .web-field input:focus,.web-field textarea:focus{border-color:#82939d;box-shadow:0 0 0 2px #82939d22}
+    .web-field small{color:#819099;font-size:9px;font-weight:400}
+    .web-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+    .web-button{min-height:35px;padding:7px 12px;border:1px solid #4b5963;border-radius:7px;background:#27313a;color:#e3e9ec;font:inherit;font-size:10px;font-weight:600;cursor:pointer}
+    .web-button:hover{border-color:#75848e;background:#303b44}
+    .web-button.primary{border-color:#697781;background:#39454e}
+    .web-button.subtle{background:#1b2329}
+    .web-button.danger{border-color:#584b4a;background:#302525;color:#e0d2d0}
+    .web-status{min-height:18px;margin:10px 0 0;color:#bbc6cb;font-size:10px;line-height:1.6}
+    .web-status[data-state="error"]{color:#e0b8b3}
+    .web-status[data-state="success"]{color:#c5d2ca}
+    .web-list{display:grid;gap:9px}
+    .web-empty{padding:20px 12px;border:1px dashed #39444c;border-radius:8px;color:#9da9b0;text-align:center;font-size:11px}
+    .web-site{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px;border:1px solid #313c44;border-radius:8px;background:#11181e}
+    .web-site strong{display:block;overflow-wrap:anywhere;color:#e2e8eb;font-size:11px}
+    .web-site a{display:block;max-width:100%;margin-top:4px;overflow:hidden;color:#9eacb5;font:10px Consolas,monospace;text-overflow:ellipsis;white-space:nowrap}
+    .web-site p{margin:5px 0 0;color:#a3afb6;font-size:10px;line-height:1.5}
+    .web-site-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}
+    .web-site-actions button{min-height:30px;padding:5px 8px;font-size:9px}
+    .web-safety{margin-top:15px;padding:11px 12px;border-left:2px solid #687780;background:#1a2228;color:#aeb9bf;font-size:10px;line-height:1.6}
+    @media(max-width:700px){.web-layout{grid-template-columns:1fr}.web-site{grid-template-columns:1fr}.web-site-actions{justify-content:flex-start}}
+  </style>
+</head>
+<body>
+  <main class="web-app">
+    <div class="web-topline"><span class="web-dot" aria-hidden="true"></span> DORK OPS / PERSONAL SHORTCUTS</div>
+    <h1>Add Web</h1>
+    <p class="web-intro">Keep useful research sites close at hand. Shortcuts are saved only in this browser and shown in the desktop Application Center.</p>
+    <div class="web-layout">
+      <section class="web-panel" aria-labelledby="web-form-title">
+        <h2 id="web-form-title">Add a website</h2>
+        <p id="web-form-description">Save a name and a secure web address. Only HTTP and HTTPS links are accepted.</p>
+        <form id="website-form" class="web-form">
+          <label class="web-field">Website name
+            <input id="website-name" name="name" type="text" maxlength="80" required autocomplete="off" placeholder="Research portal">
+          </label>
+          <label class="web-field">Website URL
+            <input id="website-url" name="url" type="url" maxlength="2048" required autocomplete="url" placeholder="https://example.com">
+            <small>Must begin with http:// or https://. Embedded usernames and passwords are not allowed.</small>
+          </label>
+          <label class="web-field">Short description <span>(optional)</span>
+            <textarea id="website-description" name="description" maxlength="160" placeholder="What do you use this site for?"></textarea>
+          </label>
+          <div class="web-actions">
+            <button class="web-button primary" id="website-submit" type="submit">Save website</button>
+            <button class="web-button subtle" id="website-cancel" type="button" hidden>Cancel edit</button>
+          </div>
+        </form>
+        <p class="web-status" id="website-status" role="status" aria-live="polite"></p>
+        <div class="web-safety">Shortcuts open in a new tab. Check the address before visiting it; adding a link does not verify or endorse its contents.</div>
+      </section>
+      <section class="web-panel" aria-labelledby="website-list-title">
+        <h2 id="website-list-title">Saved websites <span id="website-count"></span></h2>
+        <p>Edit or remove your personal shortcuts at any time.</p>
+        <div class="web-list" id="website-list" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+  <script src="add-web.js?v=1" defer></script>
+</body>
+</html>

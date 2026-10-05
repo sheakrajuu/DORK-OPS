@@ -1,12 +1,21 @@
 "use strict";
 
-const CACHE_NAME = "dork-ops-os-v19";
+const CACHE_NAME = "dork-ops-terminal-v47";
 const APP_FILES = [
   "./",
   "./index.html",
   "./dork-ops.html",
   "./dork-ops-desktop.js",
+  "./terminal.html",
+  "./dork-ops-terminal.js",
+  "./terminal.css",
+  "./add-web.html",
+  "./add-web.js",
   "./dork-engine.html",
+  "./lab-learning.js",
+  "./field-guide.html",
+  "./field-guide.css",
+  "./field-guide.js",
   "./styles.css",
   "./script.js",
   "./password-tools.js",

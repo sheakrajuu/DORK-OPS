@@ -5,6 +5,9 @@ const NMAP_SECTIONS = [
   {
     title: "Target selection",
     description: "Choose or exclude authorized targets. Review target lists carefully before scanning.",
+    whenToUse: "When defining exactly which approved hosts Nmap may inspect or excluding systems that are outside the engagement.",
+    whatToExpect: "These options determine the scan's target set; they do not by themselves tell you whether a host or port is reachable.",
+    impact: "A hostname can resolve to multiple addresses and a CIDR range can include many systems. Verify the resolved scope before scanning.",
     options: [
       ["Target argument", "A hostname, IP address, or CIDR network is given as a positional argument.", `nmap ${TARGET}`, "Basics"],
       ["-iL <file>", "Read targets from a newline-delimited input file.", `nmap -iL targets.txt`, "Basics"],
@@ -15,6 +18,9 @@ const NMAP_SECTIONS = [
   {
     title: "Host discovery",
     description: "Determine which authorized targets appear online before port scanning.",
+    whenToUse: "Before a port scan when you need to identify responsive hosts in a specifically approved range.",
+    whatToExpect: "Nmap reports hosts it can discover using the selected probes. Network filtering can hide live systems or affect results.",
+    impact: "Probe behavior varies by network and privilege level. Use only the discovery methods and address ranges authorized by the owner.",
     options: [
       ["-sL", "List targets only; do not send packets to the target hosts.", `nmap -sL <authorized target or subnet>`, "Low impact"],
       ["-sn", "Host discovery only; disable the port scan phase.", `nmap -sn <authorized target or subnet>`, "Low impact"],
@@ -31,6 +37,9 @@ const NMAP_SECTIONS = [
   {
     title: "Scan techniques",
     description: "Select a transport scan type. The target’s firewall, network path, and local privileges affect results.",
+    whenToUse: "When an assessment plan calls for a particular transport or diagnostic question; TCP connect is broadly compatible.",
+    whatToExpect: "Results classify tested ports or protocols, not application security. Firewall behavior and local privileges affect what Nmap can observe.",
+    impact: "UDP and specialized scan types can take longer or be inconclusive. Confirm the technique and rate with the system owner.",
     options: [
       ["-sT", "TCP connect scan using the operating system's connect call; broadly compatible.", `nmap -sT -p 80,443 ${TARGET}`, "Basics"],
       ["-sS", "TCP SYN scan; often requires raw-packet privileges. This is not an authorization bypass.", `nmap -sS -p 80,443 ${TARGET}`, "Careful"],
@@ -46,6 +55,9 @@ const NMAP_SECTIONS = [
   {
     title: "Port selection and ordering",
     description: "Limit scans to the ports needed for the approved assessment.",
+    whenToUse: "When you have a defined port list, need a small common-port sample, or must omit explicitly excluded ports.",
+    whatToExpect: "Only the selected ports are tested. A port omitted from the selection has no result and should not be treated as closed.",
+    impact: "Scanning all 65,535 TCP ports creates much more traffic and takes longer than a narrow list or top-ports sample.",
     options: [
       ["-p <ports>", "Specify ports and optional protocol prefixes, ranges, or comma-separated lists.", `nmap -p 22,80,443 ${TARGET}`, "Basics"],
       ["-p-", "Scan TCP ports 1 through 65535; this sends substantially more probes.", `nmap -p- -sT ${TARGET}`, "High volume"],
@@ -59,6 +71,9 @@ const NMAP_SECTIONS = [
   {
     title: "Service and version detection",
     description: "Probe open ports to identify the service and possible version; probes add traffic.",
+    whenToUse: "After identifying relevant open ports, when service identification is required and approved.",
+    whatToExpect: "Nmap reports its best service and version match; banners may be absent, misleading, proxied, or incomplete.",
+    impact: "Version probes send additional application-level traffic. Higher intensity tries more probes and can take longer.",
     options: [
       ["-sV", "Enable service and version detection on discovered open ports.", `nmap -sV -p 80,443 ${TARGET}`, "Careful"],
       ["--version-light", "Limit version detection to the more likely probes.", `nmap -sV --version-light -p 80,443 ${TARGET}`, "Lower intensity"],
@@ -69,6 +84,9 @@ const NMAP_SECTIONS = [
   {
     title: "Operating-system detection",
     description: "OS fingerprinting uses network probes and is more reliable when a host has an open and a closed port.",
+    whenToUse: "When platform identification is in scope and the host has enough responsive ports for fingerprinting.",
+    whatToExpect: "Nmap estimates a likely OS or fingerprint range. Firewalls, virtualization, and network intermediaries can reduce accuracy.",
+    impact: "OS detection uses extra probes and may need elevated privileges. Treat its result as an estimate, not a confirmed inventory fact.",
     options: [
       ["-O", "Enable remote operating-system detection.", `nmap -O ${TARGET}`, "Careful"],
       ["--osscan-limit", "Limit OS detection to targets that appear suitable for fingerprinting.", `nmap -O --osscan-limit ${TARGET}`, "Careful"],
@@ -78,6 +96,9 @@ const NMAP_SECTIONS = [
   {
     title: "Timing and impact controls",
     description: "Use conservative timing agreed with the network owner. Faster settings can increase load and packet loss.",
+    whenToUse: "When the owner has specified a scan pace, retry limit, or time budget for the approved assessment.",
+    whatToExpect: "These settings affect scan duration and probe scheduling, not the meaning of port states.",
+    impact: "Aggressive rates can overload fragile services or lose results. A timeout or retry cap can also leave findings incomplete.",
     options: [
       ["-T<0–5>", "Choose a timing template. T2 is generally slower; higher values are faster and less cautious.", `nmap -T2 -p 80,443 ${TARGET}`, "Tune carefully"],
       ["--max-retries <n>", "Cap retransmissions for port-scan probes.", `nmap --max-retries 2 -p 80,443 ${TARGET}`, "Tune carefully"],
@@ -91,6 +112,9 @@ const NMAP_SECTIONS = [
   {
     title: "DNS, IPv6, and routing",
     description: "Control name resolution, address family, and path discovery for authorized targets.",
+    whenToUse: "When DNS resolution, IPv6 address handling, or route context is relevant to the approved scan.",
+    whatToExpect: "Name-resolution and traceroute details provide context; they do not establish that a service is safe or reachable.",
+    impact: "Resolution and route probes add time or network traffic. Confirm address-family and target identity before scanning.",
     options: [
       ["-n", "Disable reverse-DNS resolution; can make scans faster and quieter.", `nmap -n -sn ${TARGET}`, "Basics"],
       ["-R", "Always perform reverse-DNS resolution for targets.", `nmap -R -sn ${TARGET}`, "Basics"],
@@ -102,6 +126,9 @@ const NMAP_SECTIONS = [
   {
     title: "Output and result filtering",
     description: "Save scan results for review. Handle output files according to your organization's data policy.",
+    whenToUse: "When you need a reviewable record, structured output for approved analysis, or less console detail.",
+    whatToExpect: "Output formats represent the observations from this run. Filtering displayed results does not change what was scanned.",
+    impact: "Output may contain sensitive host and service details. Store, share, and retain it under the owner's data-handling rules.",
     options: [
       ["-oN <file>", "Write human-readable normal output to a file.", `nmap -sT -p 80,443 -oN scan.txt ${TARGET}`, "Basics"],
       ["-oX <file>", "Write results in XML format for structured processing.", `nmap -sT -p 80,443 -oX scan.xml ${TARGET}`, "Basics"],
@@ -121,6 +148,9 @@ const NMAP_SECTIONS = [
   {
     title: "General and diagnostic options",
     description: "Display help and version information, or adjust execution assumptions.",
+    whenToUse: "For local help and version checks, or for additional detection only when the scan plan explicitly permits it.",
+    whatToExpect: "Help/version options describe the local program. Bundled detection options can report several types of observations together.",
+    impact: "The -A bundle and NSE scripts create additional probe activity. Review script behavior and get explicit approval before using them.",
     options: [
       ["-A", "Enable OS detection, version detection, default NSE scripts, and traceroute. This is a high-impact bundle; use only when explicitly in scope.", `nmap -A -p 80 ${TARGET}`, "High intensity"],
       ["-sC", "Run Nmap's default NSE scripts; scripts send additional probes, so review script behavior and authorization first.", `nmap -sC -p 80 ${TARGET}`, "High intensity"],
@@ -133,9 +163,46 @@ const NMAP_SECTIONS = [
   }
 ];
 
+window.DORK_OPS_NMAP_SECTIONS = NMAP_SECTIONS;
+
+if (document.getElementById("nmap-catalog")) {
 const catalog = document.getElementById("nmap-catalog");
 const count = document.getElementById("nmap-count");
+const search = document.getElementById("nmap-search");
+const categoryFilter = document.getElementById("nmap-category-filter");
+const favoritesToggle = document.getElementById("nmap-favorites-toggle");
+const expandToggle = document.getElementById("nmap-expand-toggle");
+const resetButton = document.getElementById("nmap-reset");
+const emptyState = document.getElementById("nmap-empty");
+const storageStatus = document.getElementById("nmap-storage-status");
+const favoritesKey = "dorkops-nmap-favorites";
+const favoriteOptions = new Set();
+let favoritesOnly = false;
+let expanded = false;
 let optionCount = 0;
+
+function loadFavorites() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(favoritesKey) || "[]");
+    if (!Array.isArray(saved) || saved.some(option => typeof option !== "string")) {
+      throw new TypeError("Saved Nmap favorites have an invalid format.");
+    }
+    saved.forEach(option => favoriteOptions.add(option));
+  } catch (error) {
+    storageStatus.textContent = "Could not load saved favorites on this device.";
+    console.error("Could not load saved Nmap favorites.", error);
+  }
+}
+
+function saveFavorites() {
+  try {
+    localStorage.setItem(favoritesKey, JSON.stringify(Array.from(favoriteOptions)));
+    storageStatus.textContent = "Favorites saved on this device.";
+  } catch (error) {
+    storageStatus.textContent = "Could not save favorites on this device; changes last only for this visit.";
+    console.error("Could not save Nmap favorites.", error);
+  }
+}
 
 function copyText(text, button) {
   const original = button.textContent;
@@ -169,9 +236,16 @@ function copyText(text, button) {
   }
 }
 
-NMAP_SECTIONS.forEach(section => {
+loadFavorites();
+
+NMAP_SECTIONS.forEach((section, sectionIndex) => {
+  const categoryOption = document.createElement("option");
+  categoryOption.value = String(sectionIndex);
+  categoryOption.textContent = section.title;
+  categoryFilter.appendChild(categoryOption);
   const container = document.createElement("section");
-  container.className = "operator-section";
+  container.className = "operator-section nmap-option-section";
+  container.dataset.category = String(sectionIndex);
   const heading = document.createElement("h2");
   heading.textContent = section.title;
   const description = document.createElement("p");
@@ -188,13 +262,46 @@ NMAP_SECTIONS.forEach(section => {
     title.className = "operator-title";
     const optionCode = document.createElement("code");
     optionCode.textContent = option;
+    const optionKey = option.toLocaleLowerCase();
     const badge = document.createElement("span");
     badge.className = `operator-status ${status === "Local only" ? "documented" : "limited"}`;
     badge.textContent = status;
-    title.append(optionCode, badge);
+    const favoriteButton = document.createElement("button");
+    favoriteButton.className = "nmap-favorite";
+    favoriteButton.type = "button";
+    favoriteButton.addEventListener("click", () => {
+      if (favoriteOptions.has(optionKey)) favoriteOptions.delete(optionKey);
+      else favoriteOptions.add(optionKey);
+      updateFavoriteButton(favoriteButton, optionKey);
+      saveFavorites();
+      filterOptions();
+    });
+    title.append(optionCode, badge, favoriteButton);
 
     const details = document.createElement("p");
+    details.className = "nmap-option-summary";
     details.textContent = summary;
+    const practicalDetails = document.createElement("details");
+    practicalDetails.className = "nmap-option-details";
+    practicalDetails.open = expanded;
+    const practicalSummary = document.createElement("summary");
+    practicalSummary.textContent = "When to use · expected results · impact";
+    const practicalContent = document.createElement("div");
+    practicalContent.className = "nmap-practical-grid";
+    [
+      ["When to use", section.whenToUse],
+      ["What to expect", section.whatToExpect],
+      ["Impact & limits", section.impact]
+    ].forEach(([label, text]) => {
+      const item = document.createElement("p");
+      const itemLabel = document.createElement("strong");
+      itemLabel.textContent = label;
+      const itemText = document.createElement("span");
+      itemText.textContent = text;
+      item.append(itemLabel, itemText);
+      practicalContent.appendChild(item);
+    });
+    practicalDetails.append(practicalSummary, practicalContent);
     const command = document.createElement("div");
     command.className = "operator-query";
     const commandCode = document.createElement("code");
@@ -208,7 +315,9 @@ NMAP_SECTIONS.forEach(section => {
     copyButton.addEventListener("click", () => copyText(example, copyButton));
     actions.appendChild(copyButton);
     command.append(commandCode, actions);
-    card.append(title, details, command);
+    card.dataset.option = optionKey;
+    card.append(title, details, practicalDetails, command);
+    updateFavoriteButton(favoriteButton, optionKey);
     list.appendChild(card);
   });
 
@@ -216,7 +325,58 @@ NMAP_SECTIONS.forEach(section => {
   catalog.appendChild(container);
 });
 
-count.textContent = `${optionCount} options`;
+const allCards = Array.from(catalog.querySelectorAll(".nmap-card"));
+const allSections = Array.from(catalog.querySelectorAll(".nmap-option-section"));
+
+function updateFavoriteButton(button, optionKey) {
+  const isFavorite = favoriteOptions.has(optionKey);
+  button.textContent = isFavorite ? "★ Saved" : "☆ Save";
+  button.setAttribute("aria-pressed", String(isFavorite));
+  button.setAttribute("aria-label", `${isFavorite ? "Remove" : "Add"} ${optionKey} ${isFavorite ? "from" : "to"} favorites`);
+}
+
+function filterOptions() {
+  const query = search.value.trim().toLocaleLowerCase();
+  const category = categoryFilter.value;
+  let visible = 0;
+  allCards.forEach(card => {
+    const matchesQuery = !query || card.textContent.toLocaleLowerCase().includes(query);
+    const matchesCategory = category === "all" || card.closest(".nmap-option-section").dataset.category === category;
+    const matchesFavorite = !favoritesOnly || favoriteOptions.has(card.dataset.option);
+    card.hidden = !(matchesQuery && matchesCategory && matchesFavorite);
+    if (!card.hidden) visible++;
+  });
+  allSections.forEach(section => {
+    section.hidden = !section.querySelector(".nmap-card:not([hidden])");
+  });
+  count.textContent = `${visible} of ${optionCount} operators · ${favoriteOptions.size} favorites`;
+  emptyState.hidden = visible !== 0;
+}
+
+search.addEventListener("input", filterOptions);
+categoryFilter.addEventListener("change", filterOptions);
+favoritesToggle.addEventListener("click", () => {
+  favoritesOnly = !favoritesOnly;
+  favoritesToggle.setAttribute("aria-pressed", String(favoritesOnly));
+  favoritesToggle.textContent = favoritesOnly ? "★ Showing favorites" : "☆ Favorites";
+  filterOptions();
+});
+expandToggle.addEventListener("click", () => {
+  expanded = !expanded;
+  catalog.querySelectorAll(".nmap-option-details").forEach(details => { details.open = expanded; });
+  expandToggle.setAttribute("aria-pressed", String(expanded));
+  expandToggle.textContent = expanded ? "Collapse details" : "Expand details";
+});
+resetButton.addEventListener("click", () => {
+  search.value = "";
+  categoryFilter.value = "all";
+  favoritesOnly = false;
+  favoritesToggle.setAttribute("aria-pressed", "false");
+  favoritesToggle.textContent = "☆ Favorites";
+  filterOptions();
+  search.focus();
+});
+filterOptions();
 
 function setupMatrix() {
   const canvas = document.getElementById("rain");
@@ -254,3 +414,4 @@ function setupMatrix() {
 }
 
 setupMatrix();
+}

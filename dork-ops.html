@@ -1,28 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#126aa8">
+<meta name="theme-color" content="#0a0b0e">
 <meta name="description" content="Dork Ops OS desktop for authorized research and security-tool learning.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/dork-ops.png" type="image/png">
 <title>Dork Ops OS</title>
 <style>
-:root{--win:#1f2229;--bar:#2a2d36;--edge:#0d0f13;--ink:#dfe2e8;--dim:#8d93a0;--sel:#2f7be0;--btn:#2c303a;--field:#191b21;box-sizing:border-box}
+:root{--win:#17191f;--bar:#1d2028;--edge:#333842;--ink:#e1e4ea;--dim:#989eaa;--sel:#2f7be0;--btn:#252933;--field:#101217;--theme-accent:#b098ed;--theme-soft:#b098ed40;--theme-active-bg:#b098ed1c;--theme-link:#b9a2ff;box-sizing:border-box}
 *{box-sizing:border-box}
 *{scrollbar-width:none;-ms-overflow-style:none}
 *::-webkit-scrollbar{display:none}
-html,body{height:100%;margin:0;overflow:hidden;background:#0e5a96;font:13px/1.3 "Cantarell","Segoe UI",system-ui,sans-serif;color:var(--ink);user-select:none}
-#wall{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 60%,#1b8bc9 0%,#126aa8 40%,#0a3f72 100%)}
+html,body{height:100%;margin:0;overflow:hidden;background:#0a0b0e;font:13px/1.3 "Cantarell","Segoe UI",system-ui,sans-serif;color:var(--ink);user-select:none}
+#wall{position:fixed;inset:0;background:#0a0b0e}
 #wall svg{width:100%;height:100%;position:absolute;inset:0}
 #panel{position:fixed;top:0;left:0;right:0;height:30px;background:rgba(14,16,21,.92);display:flex;align-items:center;gap:6px;padding:env(safe-area-inset-top,0px) 10px 0;z-index:9999}
 #panel button{background:none;border:0;color:var(--ink);height:24px;min-width:24px;padding:0 8px;border-radius:3px;font:inherit;cursor:pointer}
 #panel button:hover,#panel button.on{background:#2a2e38}
-#panel button:focus-visible,.win button:focus-visible,.item:focus-visible,.row:focus-visible{outline:2px solid #6fb0ff;outline-offset:1px}
+#panel button:focus-visible,.win button:focus-visible{outline:2px solid var(--theme-accent);outline-offset:1px}
 #panel .sp{flex:1}
-#panel .ws.cur{border-bottom:2px solid var(--sel);border-radius:0}
-.dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:#2fb7a0;vertical-align:middle}
 #clock{color:var(--dim);padding-right:6px}
 .win{position:absolute;background:var(--win);border:1px solid var(--edge);border-radius:7px;box-shadow:0 12px 40px rgba(0,0,0,.55);display:flex;flex-direction:column;max-width:calc(100vw - 8px);max-height:calc(100vh - 40px)}
 .win.hide{display:none}
@@ -30,144 +26,60 @@ html,body{height:100%;margin:0;overflow:hidden;background:#0e5a96;font:13px/1.3 
 .title:active{cursor:grabbing}
 .title .lt{position:absolute;left:10px}
 .title .ctl{position:absolute;right:8px;display:flex;gap:6px}
-.ctl i{width:15px;height:15px;border-radius:50%;background:#14161b;border:0;padding:0;cursor:pointer}
-.ctl i:hover{background:#3a3f4b}
-.ctl i.x:hover{background:#2f7be0}
 .body{padding:10px 12px;overflow:auto;flex:1;min-height:0}
-.foot{padding:8px 10px}
 .btn{background:var(--btn);border:1px solid #14161b;color:var(--ink);padding:6px 12px;border-radius:4px;font:inherit;cursor:pointer;display:inline-flex;gap:6px;align-items:center;justify-content:center}
 .btn:hover{background:#363b47}
 .btn:disabled{opacity:.4;cursor:default}
-#settings{left:60px;top:80px;width:650px;height:480px}
-#settings .search{display:flex;justify-content:flex-end;padding:8px 12px 0}
-#settings input{width:150px;background:var(--field);color:var(--ink);border:1px solid #14161b;border-radius:4px;padding:6px 8px;font:inherit;user-select:text}
-#settings h4{margin:12px 0 8px;font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 6px}
-.item{display:flex;gap:8px;align-items:center;padding:6px;border-radius:5px;cursor:pointer;background:none;border:0;color:inherit;font:inherit;text-align:left}
-.item:hover{background:#292d37}
-.ic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
-.ic b{width:14px;height:14px;background:rgba(255,255,255,.92);border-radius:3px}
-.ic b.r{border-radius:50%}
-#users{left:400px;top:250px;width:590px;height:390px}
-#users .cols{display:flex;gap:20px;height:100%}
-.list{width:190px;display:flex;flex-direction:column;gap:6px}
-.rows{background:var(--field);border:1px solid #14161b;min-height:130px;overflow:auto;flex:1}
-.row{padding:8px 10px;display:block;width:100%;text-align:left;background:none;border:0;color:inherit;font:inherit;cursor:pointer}
-.row b{display:block;font-weight:700}
-.row span{color:var(--dim);font-style:italic}
-.row.sel{background:var(--sel)}
-.row.sel span{color:#d6e6ff}
 .pair{display:flex;gap:6px}
 .pair .btn{flex:1}
-.detail{flex:1;padding-top:6px}
-.who{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:600;margin-bottom:22px}
-.av{width:52px;height:52px;border-radius:50%;background:#1d78e6;display:grid;place-items:center;font-size:22px;font-weight:700;text-transform:uppercase;color:#fff}
-.kv{display:grid;grid-template-columns:90px 1fr auto;gap:10px 8px;align-items:center;margin-bottom:12px}
-.kv label{color:var(--dim);text-align:right}
-.kv .ch{color:var(--dim);cursor:pointer;background:none;border:0;font:inherit}
-.kv .ch:hover{color:var(--ink)}
-#groups{left:740px;top:430px;width:365px;height:300px}
-#groups .gl{display:flex;gap:10px;height:100%}
-#groups .rows{min-height:0}
-#groups .row{padding:4px 8px}
-.side{display:flex;flex-direction:column;gap:8px;width:92px}
-#logo{position:fixed;z-index:0;left:50%;bottom:28px;transform:translateX(-50%);border:5px solid #eef6ff;color:#eef6ff;font-size:40px;font-weight:300;letter-spacing:.06em;padding:0 16px;pointer-events:none;border-bottom-width:5px;opacity:.95}
-.dlg{left:50%;top:50%;transform:translate(-50%,-50%);width:290px;z-index:20000!important}
-.dlg input{width:100%;margin:8px 0 12px;background:var(--field);color:var(--ink);border:1px solid #14161b;border-radius:4px;padding:7px 8px;font:inherit;user-select:text}
-.dlg .pair{justify-content:flex-end}
-.dlg .pair .btn{flex:none}
-@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}#users .cols{flex-direction:column}.list{width:100%}#logo{font-size:28px}}
 .win.max{left:0!important;top:30px!important;width:100vw!important;height:calc(100vh - 30px)!important;max-width:none;max-height:none;border-radius:0}
 .win.max .title{border-radius:0;cursor:default}
-.pi{display:inline-grid;place-items:center;vertical-align:middle}
 .lt{display:flex}
-.ic{color:#fff}
 .cb{width:20px;height:20px;border-radius:50%;background:#14161b;border:0;color:#c4c8d0;display:grid;place-items:center;padding:0;cursor:pointer}
 .cb:hover{background:#3a3f4b}
 .cb[data-close]:hover{background:#d9534f;color:#fff}
-#brand{font-size:12px;letter-spacing:.08em;color:#6fb0ff;padding:0 10px 0 2px}
+#brand{font-size:12px;letter-spacing:.08em;color:var(--ink);padding:0 10px 0 2px}
 #tasks{display:flex;gap:4px;margin-left:8px;overflow:hidden}
 #panel .tk{display:flex;align-items:center;gap:6px;max-width:150px}
+#panel .tk{color:#d3d7de}
+#panel .tk.on{color:#fff}
+#panel .tk.mn{color:#cbd0d8;opacity:.8}
 .tk span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#panel .tk.on{background:#2a2e38;box-shadow:inset 0 -2px #2f7be0}
+#panel .tk.on{background:transparent;box-shadow:none}
 #panel .tk.mn{opacity:.55}
 @media(max-width:700px){.tk span{display:none}#brand{display:none}}
 #panel{height:38px;gap:4px}
-#apps-toggle{display:flex;align-items:center;gap:6px}
-#workspaces{display:flex;align-items:center;gap:2px}
+#apps-toggle{display:flex;min-height:32px;align-items:center;gap:8px;padding:0 10px 0 5px;border:1px solid #38404b;border-radius:6px;background:#20232a;font-weight:650}
+#apps-toggle:hover{border-color:var(--theme-accent);background:#262a32}
+#apps-toggle .toolbar-icon{width:25px;height:25px;border:0;border-radius:0;background:transparent;color:var(--theme-accent)}
+#apps-toggle .toolbar-icon svg{width:16px;height:16px}
 #tasks{min-width:0}
 #panel .tk{max-width:190px;overflow:hidden}
-#panel .tk.on{background:#2a2e38;box-shadow:inset 0 -2px #2f7be0}
-#panel .tk.active{background:#2a2e38;box-shadow:inset 0 -2px #2f7be0}
+#panel .tk.on,#panel .tk.active{background:transparent;box-shadow:none}
 #panel .tk span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#notification-count{display:inline-grid;place-items:center;min-width:16px;height:16px;margin-left:4px;border-radius:50%;background:#2f7be0;color:#fff;font-size:10px}
-body[data-wallpaper="midnight"] #wall{background:radial-gradient(ellipse at 50% 60%,#303746 0%,#171d2b 45%,#090d16 100%)}
-body[data-wallpaper="violet"] #wall{background:radial-gradient(ellipse at 50% 60%,#63489b 0%,#392b67 45%,#17112d 100%)}
-body[data-tint="teal"]{--sel:#218d91}
-body[data-tint="violet"]{--sel:#7053b8}
+#notification-count{display:inline-grid;place-items:center;min-width:16px;height:16px;margin-left:4px;border-radius:50%;background:var(--theme-accent);color:#111318;font-size:10px}
 body[data-density="compact"] .body{padding:7px 9px}
 body[data-density="compact"] .settings-body{gap:5px}
 body[data-motion="reduced"] *,body[data-motion="reduced"] *::before,body[data-motion="reduced"] *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-.apps-menu{position:fixed;z-index:10001;top:44px;left:8px;width:min(620px,calc(100vw - 16px));max-height:calc(100vh - 52px);overflow:auto;padding:14px;border:1px solid #424650;border-radius:8px;background:#1b1e25;box-shadow:0 16px 44px #000b}
-.launcher-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:2px 2px 12px;border-bottom:1px solid #373b45}
-.launcher-kicker{margin:0 0 3px;color:#8d93a0;font-size:9px;font-weight:700;letter-spacing:.14em}
-.launcher-head h2{margin:0;color:#f1f3f7;font-size:16px;line-height:1.2}
-.launcher-close{width:30px;height:30px;display:grid;place-items:center;border:1px solid #3b404a;border-radius:5px;background:#242831;color:#c6cbd4;cursor:pointer}
-.launcher-close:hover{background:#303641;color:#fff}
-.launcher-group{margin-top:13px}
-.launcher-group h3{display:flex;align-items:center;gap:7px;margin:0 0 7px;color:#a9b1bf;font-size:9px;letter-spacing:.12em}
-.launcher-count{margin-left:auto;color:#737c8a;font-size:9px;font-weight:400;letter-spacing:0}
-.launcher-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
-.launcher-tile{display:flex;min-width:0;min-height:52px;align-items:center;gap:10px;padding:7px 9px;border:1px solid transparent;border-radius:6px;background:#22262f;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
-.launcher-tile:hover,.launcher-tile:focus-visible{border-color:#485465;background:#2a303a;color:#fff;text-decoration:none}
-.launcher-tile.selected{border-color:#3a6293;background:#26364a}
-.app-icon{width:34px;height:34px;display:grid;flex:none;place-items:center;border:1px solid #ffffff16;border-radius:7px;background:#25476f;color:#a9d1ff}
-.app-icon.violet{background:#3e315d;color:#d2bdff}.app-icon.green{background:#254b3d;color:#9bdfbd}.app-icon.amber{background:#51402b;color:#f0c98a}.app-icon.teal{background:#25494d;color:#9adadd}
-.app-icon svg,.website-arrow svg,.launcher-close svg,.launcher-group h3 svg{width:17px;height:17px}
-.launcher-copy{display:grid;min-width:0;gap:3px}
-.launcher-copy strong{overflow:hidden;color:inherit;font-size:11px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
-.launcher-copy small{overflow:hidden;color:#939baa;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
-.website-arrow{margin-left:auto;color:#858e9d}
 .toolbar-icon{width:18px;height:18px;display:grid;place-items:center}
 .toolbar-icon svg{width:17px;height:17px}
 #settings-toggle,#notifications-toggle{width:30px;height:28px;display:grid;place-items:center;padding:0;position:relative}
-#notification-count{position:absolute;top:-3px;right:-3px;min-width:14px;height:14px;display:grid;place-items:center;padding:0 3px;border:1px solid #12151a;border-radius:99px;background:#397ee0;color:white;font-size:9px;line-height:1}
+#notification-count{position:absolute;top:-3px;right:-3px;min-width:14px;height:14px;display:grid;place-items:center;padding:0 3px;border:1px solid #12151a;border-radius:99px;font-size:9px;line-height:1}
 #notification-count[hidden]{display:none}
 .win[hidden]{display:none}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.launcher-search{display:block;width:100%;margin:12px 0 4px;padding:9px 11px;border:1px solid #414650;border-radius:5px;background:#12161d;color:var(--ink);font:inherit;user-select:text}
-.launcher-entry{position:relative;min-width:0}
-.launcher-entry>.launcher-tile{width:100%;height:100%;padding-right:37px}
-.pin-toggle{position:absolute;z-index:1;top:50%;right:5px;width:27px;height:27px;transform:translateY(-50%);display:grid;place-items:center;border:1px solid #414650;border-radius:5px;background:#1b1e25;color:#aeb7c5;font-size:17px;line-height:1;cursor:pointer}
-.pin-toggle:hover,.pin-toggle[aria-pressed=true]{border-color:#bf9c56;color:#f5ce7e}
-.launcher-empty{margin:8px 2px;color:var(--dim);font-size:11px}
-.workspace-name{max-width:65px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.workspace-name{display:none}
-.app-window .title>[data-window-title]{position:absolute;left:38px;right:180px;overflow:hidden;text-align:left;text-overflow:ellipsis;white-space:nowrap}
-.app-window .title:focus-visible{outline:2px solid #6fb0ff;outline-offset:-2px}
-.move-control{position:absolute;right:86px;top:4px;width:88px}
-.move-control select{width:100%;max-width:88px;padding:2px 4px;border:1px solid #414650;border-radius:4px;background:#20242c;color:var(--ink);font:inherit;font-size:10px}
-.notification{position:relative;padding-right:36px}
-.notification-dismiss{position:absolute;top:8px;right:4px;width:26px;height:26px;border:1px solid #424650;border-radius:4px;background:#242831;color:#c6cbd4;font-size:17px;cursor:pointer}
-.notification-dismiss:hover{background:#303641;color:#fff}
-.notification-clear{margin-top:10px}
-.welcome-body{display:grid;align-content:start;gap:11px}
-.welcome-body h2,.welcome-body p{margin:0}
-.welcome-body h2{font-size:19px}
-.welcome-body p,.welcome-body li{color:#b7bfcc}
-.welcome-body ul{margin:0;padding-left:20px}
-.welcome-actions{display:flex;flex-wrap:wrap;gap:8px}
-.focus-status{position:fixed;left:-10000px}
+.app-window .title>[data-window-title]{position:absolute;left:38px;right:90px;overflow:hidden;text-align:left;text-overflow:ellipsis;white-space:nowrap}
+.app-window .title:focus-visible{outline:2px solid var(--theme-accent);outline-offset:-2px}
+#focus-status{position:fixed;left:-10000px}
 .app-window{left:4vw;top:54px;width:min(760px,82vw);height:min(620px,calc(100vh - 100px));min-width:min(340px,calc(100vw - 12px));min-height:min(270px,calc(100vh - 50px));overflow:hidden;z-index:5}
 .app-window .title{flex:none}
 .app-frame{display:block;width:100%;height:calc(100% - 30px);flex:1;border:0;background:#111;min-height:0}
 .app-window.max{left:0!important;top:38px!important;width:100vw!important;height:calc(100vh - 38px)!important;min-width:0;min-height:0}
 .resize-handle{position:absolute;right:2px;bottom:2px;z-index:4;width:19px;height:19px;padding:0;border:0;border-radius:0 0 5px 0;background:linear-gradient(135deg,transparent 45%,#8791a1 46%,#8791a1 52%,transparent 53%),linear-gradient(135deg,transparent 62%,#8791a1 63%,#8791a1 69%,transparent 70%);cursor:nwse-resize;touch-action:none}
-.resize-handle:focus-visible{outline:2px solid #6fb0ff;outline-offset:-2px}
+.resize-handle:focus-visible{outline:2px solid var(--theme-accent);outline-offset:-2px}
 .app-window.max .resize-handle{display:none}
 #settings-window{left:calc(50% - 230px);top:70px;width:min(460px,calc(100vw - 20px));height:min(620px,calc(100vh - 80px));z-index:7}
 .settings-body{display:grid;align-content:start;gap:9px}
-.settings-body h3{margin:4px 0;color:#9cccf0;font-size:12px}
+.settings-body h3{margin:4px 0;color:var(--theme-accent);font-size:12px}
 .settings-body label:not(.setting-check){display:grid;grid-template-columns:minmax(130px,1fr) minmax(140px,1.3fr);gap:10px;align-items:center}
 .settings-body select,.settings-body input:not([type=checkbox]){min-width:0;padding:6px 8px;border:1px solid #414650;border-radius:4px;background:var(--field);color:var(--ink);font:inherit}
 .settings-body .setting-check{display:flex;align-items:center;gap:8px}
@@ -179,13 +91,11 @@ body[data-motion="reduced"] *,body[data-motion="reduced"] *::before,body[data-mo
 .notification strong{display:block}
 .notification p{color:var(--dim);margin:6px 0}
 .notification-actions{display:flex;align-items:center;justify-content:flex-start;gap:8px}
-.notification-actions a{color:#8fc2ff;font-size:10px;text-decoration:none}
+.notification-actions a{color:var(--theme-link);font-size:10px;text-decoration:none}
 .notification-actions a:hover{color:#fff;text-decoration:underline}
-#apps-menu button.selected{background:#2a2e38;box-shadow:inset 2px 0 var(--sel)}
 @media(max-width:700px){
   #panel{gap:2px;padding-left:5px;padding-right:5px}
   #apps-toggle>span:not(.toolbar-icon),#brand{display:none}
-  #workspaces{gap:0}
   #tasks{margin-left:2px}
   #panel .tk{max-width:42px;padding:0 5px}
   #panel .tk:not(.on){display:none}
@@ -195,182 +105,75 @@ body[data-motion="reduced"] *,body[data-motion="reduced"] *::before,body[data-mo
   #settings-window{left:8px;top:46px;width:calc(100vw - 16px);height:calc(100vh - 56px)}
   #notifications-window{right:8px;top:46px;width:calc(100vw - 16px)}
   .settings-body label:not(.setting-check){grid-template-columns:1fr}
-  .apps-menu{left:5px;width:calc(100vw - 10px);padding:10px}
-  .launcher-grid{gap:4px}
-  .launcher-tile{min-height:48px;gap:7px;padding:6px}
-  .app-icon{width:30px;height:30px}
-  .launcher-entry>.launcher-tile{padding-right:36px}
-  #panel .ws{padding:0 4px}
-  .workspace-name{display:none}
-  .move-control{right:84px;width:62px}
-  .move-control select{max-width:62px;padding-left:2px;padding-right:2px}
-  .app-window .title>[data-window-title]{right:152px}
+  .app-window .title>[data-window-title]{right:72px}
 }
-@media(max-width:390px){.launcher-grid{grid-template-columns:1fr}.launcher-tile{min-height:44px}}
-.brand-mark{width:18px;height:18px;display:inline-grid;place-items:center;color:#79bbff;vertical-align:middle}
+.brand-mark{width:18px;height:18px;display:inline-grid;place-items:center;color:var(--theme-accent);vertical-align:middle}
 .brand-mark svg{width:17px;height:17px}
 #brand{display:flex;align-items:center;gap:6px}
-#launcher-backdrop{position:fixed;inset:38px 0 0;z-index:10000;border:0;background:rgba(3,8,16,.46);backdrop-filter:blur(3px);cursor:default}
-.apps-menu{top:48px;left:50%;width:min(760px,calc(100vw - 24px));max-height:calc(100vh - 58px);transform:translateX(-50%);padding:18px 20px 20px;border-color:#46566a;background:linear-gradient(145deg,#1c2430 0%,#171c25 58%,#1b202a 100%);box-shadow:0 24px 80px #000a}
-.launcher-head{align-items:center;padding:2px 0 14px;border-color:#ffffff16}
-.launcher-identity{display:flex;align-items:center;gap:12px}
-.launcher-brand-mark{width:44px;height:44px;display:grid;flex:none;place-items:center;border:1px solid #7bbaff55;border-radius:13px;background:linear-gradient(145deg,#1c4e7b,#1c3049 70%,#282c48);box-shadow:0 6px 20px #061a35aa;color:#a8d6ff}
-.launcher-brand-mark svg{width:24px;height:24px}
-.launcher-kicker{color:#85b9ed;font-size:10px}
-.launcher-head h2{font-size:20px;letter-spacing:-.02em}
-.launcher-subtitle{margin:4px 0 0;color:#929eaf;font-size:11px}
-.launcher-close{width:34px;height:34px;border-color:#ffffff20;border-radius:9px;background:#ffffff08;font-size:20px}
-.launcher-close:hover{border-color:#75b6ff66;background:#ffffff12}
-.launcher-search-wrap{position:relative;margin:14px 0 4px}
-.launcher-search-wrap>[data-icon]{position:absolute;left:13px;top:50%;transform:translateY(-50%);display:grid;color:#788ba4;pointer-events:none}
-.launcher-search-wrap>[data-icon] svg{width:18px;height:18px}
-.launcher-search{height:42px;margin:0;padding:0 14px 0 40px;border-color:#ffffff1c;border-radius:9px;background:#0e141d;color:#f4f7fb;font-size:12px}
-.launcher-search:focus{outline:2px solid #4f91d4;outline-offset:1px;border-color:#75b6ff}
-.launcher-group{margin-top:17px}
-.launcher-group h3{margin-bottom:9px;color:#bac8d9;font-size:10px;letter-spacing:.13em}
-.launcher-count{color:#8090a4;font-size:9px}
-.launcher-grid{gap:8px}
-.launcher-tile{min-height:68px;gap:12px;padding:9px 42px 9px 11px;border-color:#ffffff0a;border-radius:10px;background:linear-gradient(135deg,#252d39,#202631);box-shadow:inset 0 1px #ffffff08;transition:background .16s,border-color .16s,transform .16s,box-shadow .16s}
-.launcher-tile:hover,.launcher-tile:focus-visible{transform:translateY(-1px);border-color:#73b6ff66;background:linear-gradient(135deg,#2c3b4e,#252d3a);box-shadow:0 8px 20px #0003;color:#fff}
-.launcher-tile.selected{border-color:#75b6ff77;background:linear-gradient(135deg,#263d58,#263143)}
-.app-icon{width:42px;height:42px;border-color:#ffffff24;border-radius:12px;background:linear-gradient(145deg,#347ac0,#214970);box-shadow:inset 0 1px #ffffff30,0 4px 12px #0003;color:#d2e9ff}
-.app-icon.violet{background:linear-gradient(145deg,#8062c5,#4a3b75);color:#eee4ff}
-.app-icon.green{background:linear-gradient(145deg,#36a582,#245848);color:#d3ffed}
-.app-icon.amber{background:linear-gradient(145deg,#c38a3d,#70502f);color:#ffedcf}
-.app-icon.teal{background:linear-gradient(145deg,#39a9ad,#28565d);color:#d4ffff}
-.app-icon svg{width:21px;height:21px;filter:drop-shadow(0 1px 2px #0004)}
-.launcher-copy{gap:4px}
-.launcher-copy strong{font-size:12px;letter-spacing:.005em}
-.launcher-copy small{color:#a0adbd;font-size:10px}
-.launcher-entry{min-height:68px}
-.launcher-entry>.launcher-tile{height:100%}
-.pin-toggle{right:7px;width:27px;height:27px;border-color:transparent;background:#ffffff08;color:#9aa9bc;font-size:17px}
-.pin-toggle:hover,.pin-toggle[aria-pressed=true]{border-color:#efc96b66;background:#efc96b18;color:#ffd779}
-#pinned-group .launcher-grid,#recent-group .launcher-grid{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 5px}
-#pinned-group .launcher-entry,#recent-group .launcher-entry{flex:0 0 min(235px,75vw);min-height:54px}
-#pinned-group .launcher-tile,#recent-group .launcher-tile{min-height:54px;padding:6px 39px 6px 8px;border-radius:9px}
-#pinned-group .app-icon,#recent-group .app-icon{width:36px;height:36px;border-radius:10px}
-#welcome-open{margin-top:14px;border-color:#ffffff18;border-radius:8px;background:#ffffff08;color:#c2d4e8}
-#welcome-open:hover{border-color:#73b6ff55;background:#263344}
-.launcher-empty{padding:20px;text-align:center}
-.launcher-help{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:9px 12px;border:1px solid #ffffff16;border-radius:8px;background:linear-gradient(135deg,#203247,#202938);color:#c7dfff;font-size:11px}
-.launcher-help:hover{border-color:#73b6ff66;background:linear-gradient(135deg,#29425d,#253247)}
-.launcher-help svg{width:16px;height:16px;color:#9bc9ff}
-#workspace-rename-dialog{width:min(370px,calc(100vw - 28px));padding:0;border:1px solid #4b5a6e;border-radius:12px;background:linear-gradient(145deg,#202a38,#191e27);color:var(--ink);box-shadow:0 24px 80px #000b}
-#workspace-rename-dialog::backdrop{background:#050912a8;backdrop-filter:blur(3px)}
-.rename-content{padding:20px}
-.rename-content h2{margin:0 0 6px;font-size:18px}
-.rename-content p{margin:0 0 16px;color:#aab5c4;font-size:11px}
-.rename-content label{display:grid;gap:7px;color:#c7d3e2;font-size:11px}
-.rename-content input{width:100%;padding:10px 11px;border:1px solid #526176;border-radius:7px;background:#101721;color:#f5f8fc;font:inherit;font-size:13px;user-select:text}
-.rename-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}
-.rename-actions button{min-width:78px;padding:7px 12px;border:1px solid #ffffff20;border-radius:7px;background:#283242;color:var(--ink);font:inherit;cursor:pointer}
-.rename-actions button[type=submit]{border-color:#4a92dc;background:#2468a9;color:white}
-.rename-actions button:hover{filter:brightness(1.15)}
-@media(max-width:700px){
-  .apps-menu{top:44px;left:50%;width:calc(100vw - 12px);max-height:calc(100vh - 50px);padding:12px}
-  .launcher-head h2{font-size:17px}
-  .launcher-brand-mark{width:38px;height:38px}
-  .launcher-grid{gap:6px}
-  .launcher-tile{min-height:62px;gap:8px;padding:8px 36px 8px 8px}
-  .launcher-entry{min-height:62px}
-  .app-icon{width:36px;height:36px;border-radius:10px}
-  #pinned-group .launcher-entry,#recent-group .launcher-entry{flex-basis:min(220px,78vw);min-height:50px}
-}
-@media(max-width:390px){.launcher-grid{grid-template-columns:1fr}.launcher-entry{min-height:56px}.launcher-tile{min-height:56px}}
+#logo{position:fixed;z-index:0;left:50%;bottom:28px;transform:translateX(-50%);color:#858b96;font-size:42px;font-weight:700;letter-spacing:.12em;opacity:.14;pointer-events:none}
+body[data-wallpaper="blue"] #wall{background:radial-gradient(ellipse at 12% 82%,#167b9540,transparent 42%),radial-gradient(ellipse at 84% 18%,#174d8d50,transparent 44%),linear-gradient(145deg,#07121b 0%,#102432 56%,#09131a 100%)}
+body[data-wallpaper="midnight"] #wall{background:radial-gradient(ellipse at 16% 82%,#1a526126,transparent 40%),radial-gradient(ellipse at 84% 20%,#57396a30,transparent 42%),linear-gradient(145deg,#080a10 0%,#11121b 55%,#091016 100%)}
+body[data-wallpaper="violet"] #wall{background:radial-gradient(ellipse at 15% 82%,#49416b48,transparent 42%),radial-gradient(ellipse at 82% 15%,#78457950,transparent 44%),linear-gradient(145deg,#100e19 0%,#21192a 55%,#11101a 100%)}
+body[data-wallpaper="blue"] #wall svg{stroke:#49718a;opacity:.25}
+body[data-wallpaper="midnight"] #wall svg{stroke:#59606b;opacity:.17}
+body[data-wallpaper="violet"] #wall svg{stroke:#78648e;opacity:.24}
+body[data-tint="blue"]{--sel:#78aee0;--theme-accent:#78aee0;--theme-soft:#78aee040;--theme-active-bg:#78aee018;--theme-link:#9cc9ef}
+body[data-tint="teal"]{--sel:#6fbbb0;--theme-accent:#6fbbb0;--theme-soft:#6fbbb040;--theme-active-bg:#6fbbb018;--theme-link:#91d2c7}
+body[data-tint="violet"]{--sel:#b098ed;--theme-accent:#b098ed;--theme-soft:#b098ed40;--theme-active-bg:#b098ed18;--theme-link:#c0a9f0}
+#panel{border-bottom:1px solid var(--theme-soft)}
+#panel button:hover{background:var(--theme-active-bg)}
+#panel #apps-toggle{border:0;background:transparent}
+#panel #apps-toggle:hover{border-color:transparent;background:transparent}
+#apps-toggle .toolbar-icon{color:var(--theme-accent)}
+.brand-mark{color:var(--theme-accent)}
+.win{border-color:var(--theme-soft)}
+.win .title{border-bottom:1px solid var(--theme-soft)}
+.settings-body select,.settings-body input:not([type=checkbox]){accent-color:var(--theme-accent)}
+.settings-body select:focus-visible,.settings-body input:focus-visible{outline:2px solid var(--theme-accent);outline-offset:1px}
+.settings-body input[type=checkbox]{accent-color:var(--theme-accent)}
+.btn:hover,.cb:hover{border-color:var(--theme-soft)}
+@media(max-width:700px){#panel{backdrop-filter:blur(12px)}.app-window{border-radius:8px}.app-window .title{border-radius:7px 7px 0 0}}
 </style>
 </head>
-<body>
+<body data-wallpaper="midnight" data-tint="violet" data-density="comfortable" data-motion="full">
 <div id="wall">
 <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#0a3f72" stroke-width="26" stroke-linecap="round" opacity=".55">
-<path d="M-40 120C120 40 220 200 120 300S-60 460 80 560"/><path d="M1240 90C1080 30 980 190 1090 290S1250 440 1110 560"/>
-<path d="M300 840C380 700 520 760 600 650S760 600 900 700"/>
-<path d="M-30 700C100 620 200 760 330 700"/><path d="M880 840C980 740 1120 800 1240 720"/>
+<path d="M-40 120C120 40 220 200 120 300S-60 460 80 560"></path><path d="M1240 90C1080 30 980 190 1090 290S1250 440 1110 560"></path>
+<path d="M300 840C380 700 520 760 600 650S760 600 900 700"></path>
+<path d="M-30 700C100 620 200 760 330 700"></path><path d="M880 840C980 740 1120 800 1240 720"></path>
 </svg>
 </div>
 
 <div id="panel">
-<b id="brand"><span class="brand-mark" data-icon="shield-check"></span><span>DORK OPS</span></b>
-<button id="apps-toggle" title="Applications" aria-label="Open applications" aria-expanded="false" aria-controls="apps-menu"><span class="toolbar-icon" data-icon="layout-grid"></span><span>Applications</span></button>
-<button id="launcher-backdrop" type="button" aria-label="Close application center" hidden></button>
-<div id="apps-menu" class="apps-menu" hidden role="dialog" aria-label="Application center">
-  <div class="launcher-head"><div class="launcher-identity"><span class="launcher-brand-mark" data-icon="shield-check"></span><div><p class="launcher-kicker">DORK OPS · FIELD DESK</p><h2>Application center</h2><p class="launcher-subtitle">Research tools, references, and shortcuts</p></div></div><button class="launcher-close" type="button" aria-label="Close application center">×</button></div>
-  <div class="launcher-search-wrap"><span data-icon="search"></span><input id="launcher-search" class="launcher-search" type="search" placeholder="Search labs, references, and links" aria-label="Search applications"></div>
-  <section class="launcher-group" id="pinned-group" aria-labelledby="pinned-heading" hidden><h3 id="pinned-heading">PINNED <span class="launcher-count"></span></h3><div class="launcher-grid" id="pinned-apps"></div></section>
-  <section class="launcher-group" id="recent-group" aria-labelledby="recent-heading" hidden><h3 id="recent-heading">RECENT <span class="launcher-count"></span></h3><div class="launcher-grid" id="recent-apps"></div></section>
-  <button class="launcher-help" id="welcome-open" type="button"><span data-icon="book-open-check"></span><span>Welcome &amp; quick help</span></button>
-  <section class="launcher-group" aria-labelledby="labs-heading">
-    <h3 id="labs-heading">LABS <span class="launcher-count">4 APPS</span></h3>
-    <div class="launcher-grid">
-      <button class="launcher-tile" type="button" data-app="dorking"><span class="app-icon blue" data-icon="scan-search"></span><span class="launcher-copy"><strong>Google Dorking Lab</strong><small>Build scoped public searches</small></span></button>
-      <button class="launcher-tile" type="button" data-app="images"><span class="app-icon violet" data-icon="image"></span><span class="launcher-copy"><strong>Image Lookup</strong><small>Search an image across providers</small></span></button>
-      <button class="launcher-tile" type="button" data-app="nmap"><span class="app-icon green" data-icon="radar"></span><span class="launcher-copy"><strong>Nmap Lab</strong><small>Build an authorized host scan</small></span></button>
-      <button class="launcher-tile" type="button" data-app="passwords"><span class="app-icon amber" data-icon="key-round"></span><span class="launcher-copy"><strong>Password Tools</strong><small>Explore local audit commands</small></span></button>
-    </div>
-  </section>
-  <section class="launcher-group" aria-labelledby="reference-heading">
-    <h3 id="reference-heading">REFERENCES <span class="launcher-count">4 PAGES</span></h3>
-    <div class="launcher-grid">
-      <button class="launcher-tile" type="button" data-app="operators"><span class="app-icon violet" data-icon="list-filter"></span><span class="launcher-copy"><strong>Search Operators</strong><small>Operator reference catalog</small></span></button>
-      <button class="launcher-tile" type="button" data-app="nmap-reference"><span class="app-icon green" data-icon="network"></span><span class="launcher-copy"><strong>Nmap Options</strong><small>Flags and scan options</small></span></button>
-      <button class="launcher-tile" type="button" data-app="password-reference"><span class="app-icon amber" data-icon="book-open-check"></span><span class="launcher-copy"><strong>Password Tool Options</strong><small>Tool option reference</small></span></button>
-      <button class="launcher-tile" type="button" data-app="kali-tools"><span class="app-icon teal" data-icon="boxes"></span><span class="launcher-copy"><strong>Kali Tools</strong><small>Browse the tool directory</small></span></button>
-    </div>
-  </section>
-  <section class="launcher-group" aria-labelledby="websites-heading">
-    <h3 id="websites-heading">WEBSITES <span class="launcher-count">3 LINKS</span></h3>
-    <div class="launcher-grid">
-      <a class="launcher-tile website-link" href="https://osintframework.com/" target="_blank" rel="noopener noreferrer"><span class="app-icon blue" data-icon="globe"></span><span class="launcher-copy"><strong>OSINT Framework</strong><small>Open-source intelligence resources</small></span><span class="website-arrow" data-icon="arrow-up-right"></span></a>
-      <a class="launcher-tile website-link" href="https://start.me/p/L1rEYQ/osint4all" target="_blank" rel="noopener noreferrer"><span class="app-icon violet" data-icon="globe"></span><span class="launcher-copy"><strong>OSINT4ALL</strong><small>Curated OSINT bookmarks</small></span><span class="website-arrow" data-icon="arrow-up-right"></span></a>
-      <a class="launcher-tile website-link" href="https://www.exploit-db.com/" target="_blank" rel="noopener noreferrer"><span class="app-icon amber" data-icon="globe"></span><span class="launcher-copy"><strong>Exploit-DB</strong><small>Public vulnerability research</small></span><span class="website-arrow" data-icon="arrow-up-right"></span></a>
-    </div>
-  </section>
-  <p id="launcher-empty" class="launcher-empty" role="status" hidden>No applications match your search.</p>
-</div>
-<div id="workspaces" aria-label="Lab workspaces">
-  <button class="ws cur" data-workspace="1" aria-label="Workspace 1" aria-pressed="true">1 <span class="workspace-name">Workspace 1</span></button>
-  <button class="ws" data-workspace="2" aria-label="Workspace 2" aria-pressed="false">2 <span class="workspace-name">Workspace 2</span></button>
-  <button class="ws" data-workspace="3" aria-label="Workspace 3" aria-pressed="false">3 <span class="workspace-name">Workspace 3</span></button>
-  <button class="ws" data-workspace="4" aria-label="Workspace 4" aria-pressed="false">4 <span class="workspace-name">Workspace 4</span></button>
-</div>
+<b id="brand"><span class="brand-mark" data-icon="shield-check" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11"></path><path d="m9 12 2 2 4-4"></path></svg></span><span>DORK OPS</span></b>
+<button id="apps-toggle" title="Open a new Terminal window" aria-label="Open a new Terminal window"><span class="toolbar-icon" data-icon="terminal" aria-hidden="true"></span><span>Terminal</span></button>
 <span id="tasks" aria-label="Open windows"></span><span class="sp"></span>
-<button id="settings-toggle" class="icon-only" type="button" title="Settings" aria-label="Settings" aria-controls="settings-window"><span class="toolbar-icon" data-icon="settings"></span></button>
-<button id="notifications-toggle" class="icon-only" type="button" title="Notifications" aria-label="Notifications" aria-controls="notifications-window"><span class="toolbar-icon" data-icon="bell"></span><span id="notification-count" hidden></span></button>
-<span id="clock"></span>
+<button id="settings-toggle" class="icon-only" type="button" title="Settings" aria-label="Settings" aria-controls="settings-window"><span class="toolbar-icon" data-icon="settings" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg></span></button>
+<button id="notifications-toggle" class="icon-only" type="button" title="Notifications" aria-label="Notifications" aria-controls="notifications-window"><span class="toolbar-icon" data-icon="bell" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span><span id="notification-count" aria-label="2 notifications">2</span></button>
+<span id="clock">02:50 PM</span>
 </div>
 
 <template id="app-window-template">
-<div class="win app-window" data-app-window>
+<div class="win app-window" data-app-window="">
 <div class="title" tabindex="-1">
-  <span class="lt" data-window-icon aria-hidden="true"></span>
-  <span data-window-title></span>
-  <label class="move-control"><span class="sr-only">Move window to workspace</span><select data-move-window aria-label="Move window to workspace"></select></label>
-  <span class="ctl"><button class="cb" data-min aria-label="Minimize">−</button><button class="cb" data-max aria-label="Maximize">□</button><button class="cb" data-close aria-label="Close">×</button></span>
+  <span class="lt" data-window-icon="" aria-hidden="true"></span>
+  <span data-window-title=""></span>
+  <span class="ctl"><button class="cb" data-min="" aria-label="Minimize">−</button><button class="cb" data-max="" aria-label="Maximize">□</button><button class="cb" data-close="" aria-label="Close">×</button></span>
 </div>
 <iframe class="app-frame" title="" allow="clipboard-read; clipboard-write"></iframe>
 <button class="resize-handle" type="button" aria-label="Resize app window" title="Drag to resize"></button>
 </div>
 </template>
 
-<div class="win" id="welcome-window" hidden role="dialog" aria-labelledby="welcome-title">
-  <div class="title"><span class="lt"><span data-icon="book-open"></span></span><span>Welcome to Dork Ops</span><span class="ctl"><button class="cb" data-min aria-label="Minimize">−</button><button class="cb" data-max aria-label="Maximize">□</button><button class="cb" data-close aria-label="Close">×</button></span></div>
-  <div class="body welcome-body">
-    <h2 id="welcome-title">A workspace for authorized research</h2>
-    <p>Use the labs to build public searches and text-only commands. Dork Ops does not run Nmap or execute password-audit commands.</p>
-    <ul><li>Open a lab from Applications; resize, maximize, or move it between workspaces.</li><li>Use the references to check options and official documentation.</li><li>Only assess systems and domains you own or have explicit permission to review.</li><li>Your preferences, pins, and optional desktop session are stored in this browser.</li></ul>
-    <div class="welcome-actions"><button class="btn" id="welcome-apps" type="button">Browse applications</button><a class="btn" href="about.html">About Dork Ops</a><a class="btn" href="terms.html">Terms of use</a></div>
-  </div>
-</div>
-
-<div class="win" id="settings-window" hidden>
-<div class="title"><span class="lt"><span data-icon="settings"></span></span><span>Dork Ops Settings</span><span class="ctl"><button class="cb" data-min aria-label="Minimize">−</button><button class="cb" data-max aria-label="Maximize">□</button><button class="cb" data-close aria-label="Close">×</button></span></div>
+<div class="win" id="settings-window" hidden="">
+<div class="title"><span class="lt"><span data-icon="settings" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg></span></span><span>Dork Ops Settings</span><span class="ctl"><button class="cb" data-min="" aria-label="Minimize">−</button><button class="cb" data-max="" aria-label="Maximize">□</button><button class="cb" data-close="" aria-label="Close">×</button></span></div>
 <div class="body settings-body">
   <h3>Desktop</h3>
   <label>Wallpaper<select data-setting="wallpaper"><option value="blue">Blue desktop</option><option value="midnight">Midnight</option><option value="violet">Violet dusk</option></select></label>
   <label>Interface tint<select data-setting="tint"><option value="blue">Ocean blue</option><option value="teal">Teal</option><option value="violet">Violet</option></select></label>
   <label>Interface density<select data-setting="density"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></label>
   <label class="setting-check"><input type="checkbox" data-setting="reducedMotion"> Reduce animation and motion</label>
-  <label class="setting-check"><input type="checkbox" data-setting="restoreSession"> Restore open apps and workspaces after reload</label>
+  <label class="setting-check"><input type="checkbox" data-setting="restoreSession"> Restore open Terminal windows after reload</label>
   <h3>Default lab settings</h3>
   <label>Google Dorking matching<select data-setting="googleMatchMode"><option value="all">All terms (AND)</option><option value="any">Any term (OR)</option></select></label>
   <label>Nmap scan method<select data-setting="nmapScanType"><option value="-sT">TCP connect</option><option value="-sS">SYN</option><option value="-sU">UDP</option></select></label>
@@ -383,23 +186,14 @@ body[data-motion="reduced"] *,body[data-motion="reduced"] *::before,body[data-mo
 </div>
 </div>
 
-<div class="win" id="notifications-window" hidden>
-<div class="title"><span class="lt"><span data-icon="bell"></span></span><span>Dork Ops Notifications</span><span class="ctl"><button class="cb" data-min aria-label="Minimize">−</button><button class="cb" data-max aria-label="Maximize">□</button><button class="cb" data-close aria-label="Close">×</button></span></div>
-<div class="body" id="notification-list"></div>
+<div class="win" id="notifications-window" hidden="">
+<div class="title"><span class="lt"><span data-icon="bell" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span></span><span>Dork Ops Notifications</span><span class="ctl"><button class="cb" data-min="" aria-label="Minimize">−</button><button class="cb" data-max="" aria-label="Maximize">□</button><button class="cb" data-close="" aria-label="Close">×</button></span></div>
+<div class="body" id="notification-list"><article class="notification"><strong>Enjoying Dork Ops? Star it on GitHub.</strong><p>A star helps others discover this project and encourages its continued development.</p><div class="notification-actions"><a href="https://github.com/sheakrajuu/DORK-OPS" target="_blank" rel="noopener noreferrer">STAR DORK OPS ON GITHUB</a></div></article><article class="notification"><strong>Everyone is welcome to contribute.</strong><p>Help improve the labs, references, accessibility, and documentation.</p><div class="notification-actions"><a href="https://github.com/sheakrajuu/DORK-OPS" target="_blank" rel="noopener noreferrer">CONTRIBUTE ON GITHUB</a></div></article></div>
 </div>
 <span id="focus-status" class="focus-status" role="status" aria-live="polite"></span>
-<dialog id="workspace-rename-dialog" aria-labelledby="rename-dialog-title">
-  <form id="workspace-rename-form" class="rename-content">
-    <h2 id="rename-dialog-title">Rename workspace</h2>
-    <p>Choose a short name to recognize this workspace. Press Escape to cancel.</p>
-    <label for="workspace-name-input">Workspace name<input id="workspace-name-input" type="text" maxlength="24" required autocomplete="off" aria-describedby="workspace-name-help"></label>
-    <span id="workspace-name-help" class="sr-only">Enter between 1 and 24 characters.</span>
-    <div class="rename-actions"><button type="button" id="rename-cancel">Cancel</button><button type="submit">Save name</button></div>
-  </form>
-</dialog>
-
 <div id="logo">DORK OPS</div>
 
-<script src="dork-ops-desktop.js?v=17" defer></script>
-</body>
-</html>
+<script src="dork-ops-desktop.js?v=31" defer=""></script>
+
+
+</body></html>

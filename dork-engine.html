@@ -8,11 +8,13 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/dork-ops.png" type="image/png">
   <title>Dork Ops OS</title>
-  <link rel="stylesheet" href="styles.css?v=33">
-  <script src="script.js?v=23" defer></script>
+  <link rel="stylesheet" href="styles.css?v=36">
+  <script src="script.js?v=24" defer></script>
+  <script src="nmap.js?v=16" defer></script>
   <script src="password-tools.js?v=20" defer></script>
-  <script src="recommendations.js?v=7" defer></script>
-  <script src="dorkops-ui.js?v=7" defer></script>
+  <script src="recommendations.js?v=8" defer></script>
+  <script src="dorkops-ui.js?v=9" defer></script>
+  <script src="lab-learning.js?v=3" defer></script>
 </head>
 <body>
   <canvas id="rain" aria-hidden="true"></canvas>
@@ -35,13 +37,13 @@
         <div class="side-label">SEARCH TOOLS</div>
         <button class="nav-btn active" type="button" data-view="1" aria-controls="p1" aria-pressed="true"><span aria-hidden="true">»</span><span>Google Dorking Lab</span></button>
         <button class="nav-btn" type="button" data-view="2" aria-controls="p2" aria-pressed="false"><span aria-hidden="true">»</span><span>Image Lookup</span></button>
-        <button class="nav-btn" type="button" data-view="3" aria-controls="p3" aria-pressed="false"><span aria-hidden="true">»</span><span>Nmap Lab</span></button>
+        <button class="nav-btn" type="button" data-view="3" aria-controls="p3" aria-pressed="false"><span aria-hidden="true">»</span><span>Nmap Operators</span></button>
         <button class="nav-btn" type="button" data-view="4" aria-controls="p4" aria-pressed="false"><span aria-hidden="true">»</span><span>Password tools</span></button>
       </div>
       <div>
         <div class="side-label">REFERENCE</div>
         <a class="nav-btn" href="search-operators.html"><span aria-hidden="true">»</span><span>Search operators</span></a>
-        <a class="nav-btn" href="nmap-reference.html"><span aria-hidden="true">»</span><span>Nmap options</span></a>
+        <a class="nav-btn" href="#p3"><span aria-hidden="true">»</span><span>Nmap Operators</span></a>
         <a class="nav-btn" href="password-tools.html"><span aria-hidden="true">»</span><span>Password-tool options</span></a>
         <a class="nav-btn" href="kali-tools.html"><span aria-hidden="true">»</span><span>Kali tools directory</span></a>
       </div>
@@ -162,10 +164,10 @@
           </section>
         </div>
       </section>
-      <section id="p3" aria-label="Nmap lab" hidden>
-        <div class="card">
+      <section id="p3" aria-label="Nmap Operators" hidden>
+        <div class="card" id="nmap-builder">
           <div class="card-head">
-            <div><h2>NMAP LAB / COMMAND BUILDER</h2><p>Build a command for a single host you are authorized to scan. Run it locally with Nmap installed.</p></div>
+            <div><h2>NMAP OPERATORS / COMMAND BUILDER</h2><p>Build a command for a single host you are authorized to scan. Run it locally with Nmap installed.</p></div>
             <span class="pill">LOCAL COMMAND · NOT EXECUTED HERE</span>
           </div>
           <div class="field-grid">
@@ -200,7 +202,7 @@
             <label class="chip"><input id="nmap-reason" type="checkbox"> Show port-state reason (--reason)</label>
           </div>
           <label class="auth-row"><input id="nmap-auth" type="checkbox"><span>I confirm this single host is in my authorized scan scope and I will follow the owner's scanning rules.</span></label>
-          <div class="action-row"><button class="go" id="nmap-build" type="button">BUILD COMMAND &nbsp; →</button><a class="btn" href="nmap-reference.html">Browse Nmap options</a><span class="save-status" id="nmap-save-status" aria-live="polite"></span></div>
+          <div class="action-row"><button class="go" id="nmap-build" type="button">BUILD COMMAND &nbsp; →</button><button class="btn" id="nmap-open-operators" type="button">Browse Nmap operators</button><span class="save-status" id="nmap-save-status" aria-live="polite"></span></div>
           <div id="nmap-warn" class="warn" role="alert" hidden></div>
           <section class="scan-plan" id="nmap-scan-plan" aria-live="polite">
             <h3>Your scan plan</h3>
@@ -224,6 +226,43 @@
           </section>
           <p class="note">This page only formats text; it does not execute Nmap or contact the target. Use the builder only for approved single-host checks. For wider scopes, confirm explicit authorization and scan limits first.</p>
         </div>
+        <section class="nmap-guide-panel" id="nmap-guide" aria-labelledby="nmap-guide-title">
+          <div class="nmap-section-heading">
+            <div><span class="nmap-kicker">FIELD GUIDE / START HERE</span><h2 id="nmap-guide-title">A reliable scan, step by step</h2></div>
+            <a class="nmap-doc-link" href="https://nmap.org/book/man.html" target="_blank" rel="noopener noreferrer">Official Nmap manual ↗</a>
+          </div>
+          <p class="nmap-guide-intro">Nmap (Network Mapper) discovers hosts and examines ports and services. Treat a scan as a scoped measurement: choose only the checks you need, understand the traffic they create, then validate findings with the system owner.</p>
+          <div class="nmap-guide-grid">
+            <article class="nmap-guide-step"><span>01</span><h3>Confirm scope</h3><p>Get approval for exact hosts, addresses, ports, time windows, and rate limits. Resolve names and check the final target list before sending probes.</p></article>
+            <article class="nmap-guide-step"><span>02</span><h3>Discover carefully</h3><p>Start with host discovery when appropriate. Firewalls may block discovery probes, so “host seems down” is not proof that a system is offline.</p></article>
+            <article class="nmap-guide-step"><span>03</span><h3>Choose a narrow scan</h3><p>Specify only the ports and scan method needed. Add service/version or OS detection only when authorized; these send additional probes.</p></article>
+            <article class="nmap-guide-step"><span>04</span><h3>Save and interpret</h3><p>Keep a dated report in an approved location. Port states describe observations from your scan position, not a service’s complete security posture.</p></article>
+          </div>
+          <details class="nmap-guide-details">
+            <summary>How to read common port states</summary>
+            <div class="nmap-state-grid">
+              <p><code>open</code><span>An application responded on this port; verify the service and intended exposure.</span></p>
+              <p><code>closed</code><span>The host responded, but no application was listening at scan time.</span></p>
+              <p><code>filtered</code><span>Filtering prevented Nmap from deciding whether the port is open or closed.</span></p>
+              <p><code>open|filtered</code><span>Nmap could not distinguish an open port from filtered probes, common with UDP.</span></p>
+            </div>
+          </details>
+        </section>
+        <section class="nmap-library-panel" id="nmap-operators" aria-labelledby="nmap-operators-title">
+          <div class="nmap-section-heading">
+            <div><span class="nmap-kicker">REFERENCE / SEARCHABLE CATALOG</span><h2 id="nmap-operators-title">Operator library</h2><p>Find a flag, understand expected results and impact, then copy an example to adapt within your approved scope.</p></div>
+          </div>
+          <div class="nmap-library-tools">
+            <label class="nmap-search-wrap" for="nmap-search"><span aria-hidden="true">⌕</span><input id="nmap-search" type="search" placeholder="Search flags, purpose, or examples" autocomplete="off"></label>
+            <label class="nmap-filter-wrap" for="nmap-category-filter"><span>Category</span><select id="nmap-category-filter"><option value="all">All categories</option></select></label>
+            <button class="nmap-tool-button" id="nmap-favorites-toggle" type="button" aria-pressed="false">☆ Favorites</button>
+            <button class="nmap-tool-button" id="nmap-expand-toggle" type="button" aria-pressed="false">Expand details</button>
+            <button class="nmap-tool-button nmap-reset" id="nmap-reset" type="button">Reset</button>
+          </div>
+          <div class="nmap-library-status"><p class="note" id="nmap-count" aria-live="polite"></p><p class="note" id="nmap-storage-status" aria-live="polite"></p></div>
+          <p class="nmap-empty" id="nmap-empty" hidden>No operators match those filters. Try another search or reset the filters.</p>
+          <div id="nmap-catalog" aria-live="polite"></div>
+        </section>
       </section>
       <section id="p4" aria-label="Password tools lab" hidden>
         <div class="card">
@@ -296,7 +335,7 @@
           <p class="note">Use the fields above to build password-audit commands with your wordlist and authorized local hash file. In copied reference examples, replace <code>&lt;target ip&gt;</code> only with a loopback address such as <code>127.0.0.1</code> or <code>::1</code>; this lab’s Hydra command is permanently fixed to <code>127.0.0.1</code> and one task. Never use real accounts, passwords, or hash files without permission. Use the tools’ official documentation for version-specific options.</p>
         </div>
       </section>
-      <div class="footnote"><span><b>NOTE:</b> Results depend on search-engine indexing and may be incomplete or outdated.</span><span>DORK OPS · CLIENT-SIDE</span></div>
+      <div class="footnote"><span><b>NOTE:</b> Outputs are point-in-time observations, may be incomplete, and are not a guarantee of security or provenance.</span><span>DORK OPS · CLIENT-SIDE</span></div>
       <footer class="site-footer"><span>© Dork Ops</span><span><a href="about.html">About</a><a href="terms.html">Terms of use</a></span></footer>
     </main>
   </div>

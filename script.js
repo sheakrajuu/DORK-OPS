@@ -298,7 +298,9 @@ function build(restoring = false) {
     storeHistory(byId("q").value.trim(), domain, byId("keyword-match-mode").value);
     saveMainWorkspace();
   }
-  document.dispatchEvent(new CustomEvent("dorkops:google-built"));
+  document.dispatchEvent(new CustomEvent("dorkops:google-built", {
+    detail: { domain, queries: generatedQueries.slice() }
+  }));
 }
 
 function tab(number) {
@@ -315,7 +317,7 @@ function tab(number) {
   const views = {
     1: ["GOOGLE DORKING / 01", "Google Dorking Lab", "Compose precise search operators to review public pages and documents within an authorized research scope.", "PASSIVE SEARCH"],
     2: ["IMAGE LOOKUP / 02", "Image Lookup", "Compare a publicly reachable image URL using external visual search providers.", "EXTERNAL PROVIDERS"],
-    3: ["NETWORK MAPPING / 03", "Nmap Lab", "Build a local Nmap command for an authorized single-host inventory check.", "LOCAL COMMAND"],
+    3: ["NETWORK MAPPING / 03", "Nmap Operators", "Learn Nmap scan fundamentals, explore operator details, and build a local command for an authorized host.", "LOCAL COMMAND"],
     4: ["PASSWORD AUDITING / 04", "Password tools", "Learn common Hydra, John the Ripper, and Hashcat options with local-only command examples.", "LOCAL EXAMPLES"]
   };
   const [eyebrow, title, description, mode] = views[number];

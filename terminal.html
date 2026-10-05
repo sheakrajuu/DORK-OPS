@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d0f">
+  <meta name="description" content="Dork Ops text-only terminal for authorized research and security-tool learning.">
+  <link rel="stylesheet" href="terminal.css?v=5">
+  <title>Dork Ops Terminal</title>
+</head>
+<body>
+  <main class="terminal" aria-label="Dork Ops Terminal">
+    <div class="terminal-output" id="terminal-output" role="log" aria-live="polite" aria-relevant="additions text"></div>
+    <form class="terminal-input-row" id="command-form" autocomplete="off">
+      <label for="command-input" class="prompt">operator@dorkops:~$</label>
+      <input id="command-input" name="command" type="text" spellcheck="false" autocapitalize="off" aria-label="Enter a Dork Ops terminal command" placeholder="type help and press Enter">
+      <button class="submit" type="submit" aria-label="Submit command">↵</button>
+    </form>
+  </main>
+  <script src="nmap.js?v=20" defer></script>
+  <script src="password-tools.js?v=19" defer></script>
+  <script src="lab-learning.js?v=10" defer></script>
+  <script src="field-guide.js?v=10" defer></script>
+  <script src="kali-tools.js?v=8" defer></script>
+  <script src="dork-ops-terminal.js?v=14" defer></script>
+</body>
+</html>
